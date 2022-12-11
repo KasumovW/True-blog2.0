@@ -1,0 +1,50 @@
+.wrapper {
+    width: 320px;
+    height: 560px;
+    border-radius: 10px;
+    background-color: #fff;
+    padding-bottom: 10px;
+
+    img {
+        width: 100%;
+        border-radius: 10px 10px 0 0;
+        object-fit: cover;
+    }
+
+    img + div {
+        padding: 0 15px;
+    }
+
+    h3 {
+        font-size: 19px;
+        line-height: 23px;
+        color: #000;
+        margin: 20px 0 25px 0;
+
+        svg {
+            margin-right: 20px;
+            cursor: pointer;
+        }
+    }
+
+    p {
+        opacity: 0.6;
+        color: #000;
+        height: 120px;
+        overflow: hidden;
+    }
+
+    a {
+        color: #0276d5 !important;
+        text-decoration: none;
+
+    }
+
+    a::after {
+        content: ' ]';
+    }
+
+    a::before {
+        content: '[ ';
+    }
+}
