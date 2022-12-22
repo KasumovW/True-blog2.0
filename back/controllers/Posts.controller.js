@@ -12,6 +12,7 @@ module.exports.postController = {
                 category: category,
                 userID: req.user.id
             })
+            res.json(200, {message: "Пост успешно добавлен"})
         } catch (e) {
             res.json(e)
         }
@@ -38,6 +39,8 @@ module.exports.postController = {
             }
 
             post.remove()
+
+            res.json(200, {message: "Пост успешно удаленх"})
         } catch (e) {
             res.json(e)
         }

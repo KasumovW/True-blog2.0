@@ -1,15 +1,22 @@
 const mongoose = require("mongoose")
 
 const post = mongoose.Schema({
-    theme: String,
-    text: String,
+    title: {
+        type: String,
+        required: true
+    },
+    text: {
+        type: String,
+        required: true
+    },
     category: [{
         type: mongoose.SchemaTypes.ObjectId,
         ref: "Category"
     }],
     userID: {
-        // required: true,
-        // ref: "User"
+        required: true,
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: "User"
     },
     likes: {}
 })
