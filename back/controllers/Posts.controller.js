@@ -1,18 +1,20 @@
 const Post = require("../models/Posts.model")
+const User = require("../models/Users.model")
 
 module.exports.postController = {
     addPost: async (req, res) => {
 
-        const {theme, text, category} = req.body
+        const {title, text, category} = req.body
 
         try {
             await Post.create({
-                theme: theme,
-                text: text,
-                category: category,
+                title,
+                text,
+                category,
                 userID: req.user.id
             })
-            res.json(200, {message: "Пост успешно добавлен"})
+
+            res.status(200).json({message: "Пост успешно добавлен"})
         } catch (e) {
             res.json(e)
         }
@@ -22,7 +24,7 @@ module.exports.postController = {
         try {
             const posts = await Post.find()
 
-            res.json(posts)
+            res.status(200).json(posts)
         } catch (e) {
             res.json(e)
         }
@@ -34,13 +36,15 @@ module.exports.postController = {
 
             const post = await Post.findById(id)
 
-            if(post.user.toString() !== req.user.id && req.user.role !== "moderator" || "admin") {
-                return res.json({error: "Это не твоя статья, руки прочь!"})
+            console.log(post.userID, req.user.id)
+
+            if(post.userID.toString() !== req.user.id) {
+                return res.status(400).json({error: "Это не твоя статья, руки прочь!"})
             }
 
             post.remove()
 
-            res.json(200, {message: "Пост успешно удаленх"})
+            res.status(200).json({message: "Пост успешно удален"})
         } catch (e) {
             res.json(e)
         }
@@ -52,11 +56,13 @@ module.exports.postController = {
 
             const post = await Post.findById(id)
 
-            if(post.userID.toString() !== req.user.id && req.user.role !== "admin") {
+            if(post.userID.toString() !== req.user.id || req.user.role !== "admin") {
                 return res.json({error: "Это не твоя статья, руки прочь!"})
             }
 
-            Post.findByIdAndUpdate(id, {$set: {theme: req.body.theme, text: req.body.text}})
+            await Post.findByIdAndUpdate(id, {$set: {title: req.body.title, text: req.body.text}})
+
+            res.status(200).json({message: "Пост был успешно изменен"})
         } catch (e) {
             res.json(e)
         }

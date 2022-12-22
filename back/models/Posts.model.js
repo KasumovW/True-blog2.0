@@ -10,15 +10,17 @@ const post = mongoose.Schema({
         required: true
     },
     category: [{
-        type: mongoose.SchemaTypes.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "Category"
     }],
     userID: {
-        required: true,
-        type: mongoose.SchemaTypes.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     },
-    likes: {}
+    likes: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    }
 })
 
 const Post = mongoose.model("Post", post);

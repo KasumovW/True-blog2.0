@@ -3,10 +3,11 @@ const bcrypt = require("bcryptjs")
 const { validationResult } = require("express-validator")
 const jwt = require("jsonwebtoken")
 
-const generateAccessToken = (id, login) => {
+const generateAccessToken = (id, login, role) => {
     const payload = {
         id,
-        login
+        login,
+        role
     }
 
     return jwt.sign(payload, process.env.SECRET_JWT_KEY, {expiresIn: "24h"})
@@ -54,7 +55,7 @@ module.exports.userController = {
                 return res.status(400).json("Неправильный пароль")
             }
 
-            const token = generateAccessToken(user._id, user.login)
+            const token = generateAccessToken(user._id, user.login, user.role)
 
             res.json({token})
         } catch (e) {

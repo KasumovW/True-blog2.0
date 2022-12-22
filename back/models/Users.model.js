@@ -26,8 +26,8 @@ const user = mongoose.Schema({
       default: "user"
     },
     posts: [{
-        type: mongoose.SchemaTypes.ObjectId,
-        ref: "Post"
+        // type: mongoose.SchemaTypes.ObjectId,
+        // ref: "Post"
     }],
     likes: [],
     comments: [],
