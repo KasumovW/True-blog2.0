@@ -4,13 +4,12 @@ const User = require("../models/Users.model")
 module.exports.postController = {
     addPost: async (req, res) => {
 
-        const {title, text, category} = req.body
+        const {title, text} = req.body
 
         try {
             await Post.create({
                 title,
                 text,
-                category,
                 userID: req.user.id,
                 image: req.file.path
             })
