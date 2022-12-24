@@ -5,17 +5,6 @@ const user = mongoose.Schema({
         required: true,
         type: String
     },
-    email: {
-      type: String,
-      unique: true,
-    },
-    // isActivated: {
-    //   type: Boolean,
-    //   default: false,
-    // },
-    // activationLink: {
-    //     type: String,
-    // },
     password: {
         required: true,
         type: String
@@ -26,11 +15,11 @@ const user = mongoose.Schema({
       default: "user"
     },
     posts: [{
-        // type: mongoose.SchemaTypes.ObjectId,
-        // ref: "Post"
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Post"
     }],
     likes: [],
-    comments: [],
+    comments: []
 })
 
 const User = mongoose.model("User", user);

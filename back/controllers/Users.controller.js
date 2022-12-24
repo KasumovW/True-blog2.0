@@ -21,7 +21,7 @@ module.exports.userController = {
                 return res.status(400).json(errors)
             }
 
-            const {login, password, email, role} = req.body
+            const {login, password, role} = req.body
 
             const candidate = await User.findOne({login})
 
@@ -31,7 +31,7 @@ module.exports.userController = {
 
             const hashedPassword = await bcrypt.hashSync(password, 7)
 
-            const user = await User.create({login, password: hashedPassword, email, role})
+            const user = await User.create({login, password: hashedPassword, role})
             res.status(200).json(user)
         } catch (e) {
             res.json(e)

@@ -11,7 +11,8 @@ module.exports.postController = {
                 title,
                 text,
                 category,
-                userID: req.user.id
+                userID: req.user.id,
+                image: req.file.path
             })
 
             res.status(200).json({message: "Пост успешно добавлен"})
@@ -60,7 +61,7 @@ module.exports.postController = {
                 return res.json({error: "Это не твоя статья, руки прочь!"})
             }
 
-            await Post.findByIdAndUpdate(id, {$set: {title: req.body.title, text: req.body.text}})
+            await Post.findByIdAndUpdate(id, {$set: {title: req.body.title, text: req.body.text, image: req.file.path}})
 
             res.status(200).json({message: "Пост был успешно изменен"})
         } catch (e) {
