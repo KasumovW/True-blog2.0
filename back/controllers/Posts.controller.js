@@ -7,12 +7,21 @@ module.exports.postController = {
         const {title, text} = req.body
 
         try {
-            await Post.create({
-                title,
-                text,
-                userID: req.user.id,
-                image: req.file.path
-            })
+
+            if(req.file) {
+                await Post.create({
+                    title,
+                    text,
+                    userID: req.user.id,
+                    image: req.file.path
+                })
+            } else {
+                await Post.create({
+                    title,
+                    text,
+                    userID: req.user.id,
+                })
+            }
 
             res.status(200).json({message: "Пост успешно добавлен"})
         } catch (e) {

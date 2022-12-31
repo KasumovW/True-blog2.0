@@ -9,6 +9,9 @@ const post = mongoose.Schema({
         type: String,
         required: true
     },
+    image: {
+        type: String
+    },
     userID: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
@@ -17,6 +20,11 @@ const post = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     }],
+    comments: [{
+        userID: mongoose.Schema.Types.ObjectId ,
+        text: String,
+        likes: [{type: mongoose.Schema.Types.ObjectId, ref: "User"}],
+    }]
 })
 
 const Post = mongoose.model("Post", post);
