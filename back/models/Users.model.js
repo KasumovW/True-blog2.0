@@ -14,6 +14,10 @@ const user = mongoose.Schema({
       type: String,
       default: "user"
     },
+    avatar: {
+        type: String,
+        default: "/uploads/avatar_plug.svg"
+    },
     posts: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Post"

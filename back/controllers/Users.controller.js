@@ -1,7 +1,8 @@
-const User = require("../models/Users.model")
-const bcrypt = require("bcryptjs")
-const { validationResult } = require("express-validator")
-const jwt = require("jsonwebtoken")
+const User = require("../models/Users.model");
+const Post = require("../models/Posts.model")
+const bcrypt = require("bcryptjs");
+const { validationResult } = require("express-validator");
+const jwt = require("jsonwebtoken");
 
 const generateAccessToken = (id, login, role) => {
     const payload = {
@@ -81,6 +82,64 @@ module.exports.userController = {
         }
         catch (e) {
             res.json(e)
+        }
+    },
+
+    changeAvatar: async (req, res) => {
+        try {
+            const user = await User.findByIdAndUpdate(req.params.id, {$set: {avatar: req.file.path}})
+
+            if(!user) {
+                return res.status(400).json({message: "Пользователь не найден"})
+            }
+
+            if(user._id !== req.params.id) {
+                return res.status(400).json({message: "У вас недостаточно прав"})
+            }
+
+            res.json("Фото профиля было успешно изменено")
+        }
+        catch (e) {
+            res.json("Не удалось изменить фото профиля")
+        }
+    },
+
+    commentPost: async (req, res) => {
+        try{
+            const post = await Post.findById
+            const user = await Post.findById
+
+            if(!post) {
+                return res.status(404).json({message: "Пост не был найден"})
+            } else if (!user) {
+                return res.status(404).json({message: "Не удалось найти пользователя"})
+            }
+
+            Post.findByIdAndUpdate(req.params.id, {$push: { comments: {userID: req.user.id, text: req.body.text}}})
+            User.findByIdAndUpdate(req.user.id, {$push: { comments: {userID: req.user.id, text: req.body.text}}})
+
+            res.status(200).json({message: "Комментарий успешно добавлен"})
+        }
+        catch (e) {
+            res.status(400).json({message: "Не удалось добавить комментарий"})
+        }
+    },
+
+    likePost: async (req, res) => {
+        try{
+            const post = await Post.findByIdAndUpdate(req.params.id, {$push: { likes: req.user.id }})
+            const user = await User.findByIdAndUpdate(req.user.id, {$push: { likes: req.user.id }})
+
+            if(!post) {
+                return res.status(404).json({message: "Пост не был найден"})
+            } else if (!user) {
+                return res.status(404).json({message: "Не удалось добавить в понравившиеся"})
+            }
+
+            res.status(200).json({message: "Добавлено в понравившиеся"})
+        }
+        catch (e) {
+            res.status(400).json({message: "Не удалось лайкнуть пост"})
         }
     }
 }
