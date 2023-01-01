@@ -58,7 +58,7 @@ module.exports.userController = {
 
             const token = generateAccessToken(user._id, user.login, user.role)
 
-            res.json({token})
+            res.json({token, login: user.login, role: user.role, posts: user.posts, likes: user.likes, comments: user.comments, avatar: user.avatar})
         } catch (e) {
             res.json(e)
         }
