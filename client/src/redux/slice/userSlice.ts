@@ -1,11 +1,15 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import Cookies from 'js-cookie';
 import { UserData } from '../../types/user';
+import Cookies from 'js-cookie';
 
 const initialState = {
     login: '',
     password: '',
     token: Cookies.get('token') || null,
+
+    //'pending' | 'succeeded' | 'failed' | null
+    status: null,
+    error: null,
 };
 
 export const authorization = createAsyncThunk(
@@ -28,20 +32,44 @@ export const authorization = createAsyncThunk(
             }
 
             const newData = await response.json();
-            Cookies.set('token', newData.token);
+            dispatch(changeToken(newData));
         } catch (error: any) {
             return rejectWithValue(error.message);
         }
     }
 );
 
+const setError = (state: { status: string; error: Error }, action: { payload: any }) => {
+    state.status = 'failed';
+    state.error = action.payload;
+};
+
 export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        changeUserData: (state, action) => {
-            state.login = action.payload.login;
-            state.password = action.payload.password;
+        changeToken: (_, action) => {
+            Cookies.set('token', action.payload.token);
+        },
+        logout: (state) => {
+            state.token = null;
+            Cookies.remove('token');
         },
     },
+    extraReducers: {
+        //@ts-ignore
+        [authorization.pending]: (state: { status: string; error: null }) => {
+            state.status = 'pending';
+            state.error = null;
+        },
+        //@ts-ignore
+        [authorization.fulfilled]: (state: any, action: any) => {
+            state.status = 'succeeded';
+            state.error = null;
+        },
+        //@ts-ignore
+        [authorization.rejected]: setError,
+    },
 });
+
+export const { changeToken, logout } = userSlice.actions;
