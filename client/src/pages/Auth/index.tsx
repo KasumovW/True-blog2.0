@@ -18,16 +18,11 @@ const Index = ({ state }: Props) => {
 
     const { status } = useAppSelector((state) => state.user);
 
-    const [data, setData] = React.useState<UserData>({ login: '', password: '' });
+    const [data, setData] = React.useState<UserData>({ login: '', password: '', passConf: '' });
+    console.log(data);
 
     const changeData = (e: React.ChangeEvent<HTMLInputElement>, key: string) => {
         setData({ ...data, [key]: e.target.value });
-    };
-
-    const handleSubmit = (e: React.MouseEvent) => {
-        e.preventDefault();
-
-        dispatch(authorization(data));
     };
 
     if (status === 'pending') {
@@ -39,17 +34,23 @@ const Index = ({ state }: Props) => {
     }
 
     if (status === 'succeeded') {
-        navigate('/');
-        window.location.reload();
+        // navigate('/');
+        // window.location.reload();
     }
 
     if (state === 'auth') {
-        return <Auth changeData={changeData} handleSubmit={handleSubmit} data={data} />;
+        return <Auth changeData={changeData} data={data} />;
     }
 
     if (state === 'reg') {
-        return <Reg />;
+        return <Reg changeData={changeData} data={data} />;
     }
+
+    return (
+        <div className={s.loader}>
+            <CircularProgress color='primary' size='100px' />;
+        </div>
+    );
 };
 
 export default Index;

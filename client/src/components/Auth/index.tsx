@@ -1,16 +1,23 @@
 import { Box, Typography, TextField, FormControlLabel, Checkbox, Button, Grid } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { useAppDispatch } from '../../hooks/redux';
+import { authorization } from '../../redux/slice/userSlice';
 import { UserData } from '../../types/user';
 
 import s from './Auth.module.scss';
 
 type Props = {
     changeData: Function;
-    handleSubmit: Function;
     data: UserData;
 };
 
-const Index = ({ changeData, handleSubmit, data }: Props) => {
+const Index = ({ changeData, data }: Props) => {
+    const dispatch = useAppDispatch();
+    const handleAuth = (e: React.MouseEvent) => {
+        e.preventDefault();
+        dispatch(authorization(data));
+    };
+
     return (
         <div className={s.wrapper}>
             <Box
@@ -26,7 +33,7 @@ const Index = ({ changeData, handleSubmit, data }: Props) => {
                 <Typography component='h1' variant='h5'>
                     Sign in
                 </Typography>
-                <Box component='form' onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                <Box component='form' onSubmit={handleAuth} noValidate sx={{ mt: 1 }}>
                     <TextField
                         margin='normal'
                         required
@@ -55,19 +62,21 @@ const Index = ({ changeData, handleSubmit, data }: Props) => {
                         control={<Checkbox value='remember' color='primary' />}
                         label='Remember me'
                     />
-                    <Button type='submit' fullWidth variant='contained' sx={{ mt: 3, mb: 2 }}>
+                    <Button
+                        disabled={!data.login || !data.password}
+                        type='submit'
+                        fullWidth
+                        variant='contained'
+                        sx={{ mt: 3, mb: 2 }}
+                    >
                         Sign In
                     </Button>
                     <Grid container>
                         <Grid item xs>
-                            <Link to='/' variant='body2'>
-                                Forgot password?
-                            </Link>
+                            <Link to='/'>Forgot password?</Link>
                         </Grid>
                         <Grid item>
-                            <Link to='/reg' variant='body2'>
-                                {"Don't have an account? Sign Up"}
-                            </Link>
+                            <Link to='/reg'>{"Don't have an account? Sign Up"}</Link>
                         </Grid>
                     </Grid>
                 </Box>

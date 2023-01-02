@@ -13,7 +13,7 @@ const initialState = {
 };
 
 export const authorization = createAsyncThunk(
-    'todos/postTodos',
+    'user/auth',
     async (data: UserData, { rejectWithValue, dispatch }) => {
         try {
             const response = await fetch('http://localhost:5000/users/login', {
@@ -38,6 +38,30 @@ export const authorization = createAsyncThunk(
         }
     }
 );
+
+export const registration = createAsyncThunk('user/reg', async (data: UserData, { rejectWithValue }) => {
+    try {
+        const response = await fetch('http://localhost:5000/users/registration', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                login: data.login,
+                password: data.password,
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error('Вы не смогли зарегистрироваться, ошибка сервера!');
+        }
+
+        const newData = await response.json();
+        console.log(newData);
+    } catch (error: any) {
+        return rejectWithValue(error.message);
+    }
+});
 
 const setError = (state: { status: string; error: Error }, action: { payload: any }) => {
     state.status = 'failed';
@@ -69,6 +93,19 @@ export const userSlice = createSlice({
         },
         //@ts-ignore
         [authorization.rejected]: setError,
+
+        //@ts-ignore
+        [registration.pending]: (state: { status: string; error: null }) => {
+            state.status = 'pending';
+            state.error = null;
+        },
+        //@ts-ignore
+        [registration.fulfilled]: (state: any, action: any) => {
+            state.status = 'succeeded';
+            state.error = null;
+        },
+        //@ts-ignore
+        [registration.rejected]: setError,
     },
 });
 
