@@ -1,6 +1,6 @@
 .wrapper {
     width: 320px;
-    height: 560px;
+    height: 600px;
     border-radius: 10px;
     background-color: #fff;
     padding-bottom: 10px;
@@ -39,11 +39,11 @@
         text-decoration: none;
     }
 
-    a::after {
+    p + a::after {
         content: ' ]';
     }
 
-    a::before {
+    p + a::before {
         content: '[ ';
     }
 }

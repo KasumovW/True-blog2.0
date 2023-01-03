@@ -1,4 +1,3 @@
-import React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -8,11 +7,22 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 
 import s from './Header.module.scss';
-import { Link } from 'react-router-dom';
-
+import { Link, useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { logout } from '../../redux/slice/userSlice';
 type Props = {};
 
 const index = (props: Props) => {
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+    const token = useAppSelector((state) => state.user.token);
+
+    const handleExit = () => {
+        dispatch(logout());
+        navigate('/');
+        window.location.reload();
+    };
+
     return (
         <Box sx={{ flexGrow: 1 }} className={s.wrapper}>
             <AppBar position='static'>
@@ -21,11 +31,17 @@ const index = (props: Props) => {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
-                        MainPage
+                        <Link to='/'>MainPage</Link>
                     </Typography>
-                    <Link to='/auth'>
-                        <Button color='inherit'>Login</Button>
-                    </Link>
+                    {token ? (
+                        <Button onClick={handleExit} color='secondary'>
+                            Logout
+                        </Button>
+                    ) : (
+                        <Link to='/auth'>
+                            <Button color='inherit'>Login</Button>
+                        </Link>
+                    )}
                 </Toolbar>
             </AppBar>
         </Box>

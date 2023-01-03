@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Layout from '../../layouts/layout';
 import Auth from '../../pages/Auth';
 import Main from '../../pages/Main';
+import NewPost from '../../pages/NewPost';
 
 import ErrorPage from '../ErrorPage';
 
@@ -11,7 +12,10 @@ const App: React.FC = () => {
         {
             path: '/',
             element: <Layout />,
-            children: [{ path: '/', element: <Main /> }],
+            children: [
+                { path: '/', element: <Main /> },
+                { path: '/new-post', element: <NewPost /> },
+            ],
             errorElement: <ErrorPage />,
         },
         {
