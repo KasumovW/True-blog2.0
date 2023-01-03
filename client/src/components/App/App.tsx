@@ -4,6 +4,7 @@ import Layout from '../../layouts/layout';
 import Auth from '../../pages/Auth';
 import Main from '../../pages/Main';
 import Profile from "../../pages/Profile";
+import NewPost from '../../pages/NewPost';
 import ErrorPage from '../ErrorPage';
 
 const App: React.FC = () => {
@@ -11,17 +12,11 @@ const App: React.FC = () => {
         {
             path: '/',
             element: <Layout />,
-            children: [{ path: '/', element: <Main /> }, {path: '/profile', element: <Profile />}],
-            errorElement: <ErrorPage />,
-        },
-        {
-            path: '/auth',
-            element: <Auth state='auth' />,
-            errorElement: <ErrorPage />,
-        },
-        {
-            path: '/reg',
-            element: <Auth state='reg' />,
+            children: [
+                { path: '/', element: <Main /> },
+                { path: '/new-post', element: <NewPost /> },
+                { path: '/profile', element: <Profile />},
+            ],
             errorElement: <ErrorPage />,
         },
         {
