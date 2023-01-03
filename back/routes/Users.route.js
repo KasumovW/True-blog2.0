@@ -13,8 +13,9 @@ router.post("/users/registration", [
     check("password", "Пароль должен быть не меньше 4 и не больше 12 символов").isLength({min: 4, max: 12})
 ], userController.registration)
 router.post("/users/login", userController.login)
-router.patch("/users/:id", authMiddleware, upload.single("avatar"), userController.changeAvatar)
+router.patch("/users/avatar/:id", authMiddleware, upload.single("avatar"), userController.changeAvatar)
 router.post("/users/like/:id", authMiddleware, userController.likePost)
 router.post("/users/comment/:id", authMiddleware, userController.commentPost)
+router.delete("/users/:id", userController.deleteUser)
 
 module.exports = router

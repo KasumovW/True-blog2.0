@@ -3,8 +3,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Layout from '../../layouts/layout';
 import Auth from '../../pages/Auth';
 import Main from '../../pages/Main';
+import Profile from "../../pages/Profile";
 import NewPost from '../../pages/NewPost';
-
 import ErrorPage from '../ErrorPage';
 
 const App: React.FC = () => {
@@ -15,6 +15,7 @@ const App: React.FC = () => {
             children: [
                 { path: '/', element: <Main /> },
                 { path: '/new-post', element: <NewPost /> },
+                { path: '/profile', element: <Profile />},
             ],
             errorElement: <ErrorPage />,
         },

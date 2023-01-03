@@ -6,7 +6,7 @@ import s from './Main.module.scss';
 
 type Props = {};
 
-const Main = (props: Props) => {
+const Index = (props: Props) => {
     return (
         <div className={s.wrapper}>
             <LeftBar />
@@ -19,4 +19,4 @@ const Main = (props: Props) => {
     );
 };
 
-export default Main;
+export default Index;
