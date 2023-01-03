@@ -19,7 +19,7 @@ const index = (props: Props) => {
             <h4>
                 <i style={{ color: 'gray' }}>Not Found</i>
             </h4>
-            <Link to='/'>Hello World</Link>
+            <Link to='/'>To main page</Link>
         </div>
     );
 };

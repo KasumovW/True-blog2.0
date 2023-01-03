@@ -24,6 +24,16 @@ const App: React.FC = () => {
             element: <Auth state='reg' />,
             errorElement: <ErrorPage />,
         },
+        {
+            path: '/auth',
+            element: <Auth state='auth' />,
+            errorElement: <ErrorPage />,
+        },
+        {
+            path: '/reg',
+            element: <Auth state='reg' />,
+            errorElement: <ErrorPage />,
+        },
     ]);
 
     return (
