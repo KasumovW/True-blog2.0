@@ -31,7 +31,7 @@ const index = (props: Props) => {
                         <MenuIcon />
                     </IconButton>
                     <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
-                        MainPage
+                        <Link to='/'>MainPage</Link>
                     </Typography>
                     {token ? (
                         <Button onClick={handleExit} color='secondary'>
