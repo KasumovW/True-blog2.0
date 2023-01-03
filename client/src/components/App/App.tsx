@@ -1,8 +1,9 @@
 import React from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Layout from '../../layouts/layout';
+import Auth from '../../pages/Auth';
 import Main from '../../pages/Main';
-
+import Profile from "../../pages/Profile";
 import ErrorPage from '../ErrorPage';
 
 const App: React.FC = () => {
@@ -10,7 +11,17 @@ const App: React.FC = () => {
         {
             path: '/',
             element: <Layout />,
-            children: [{ path: '/', element: <Main /> }],
+            children: [{ path: '/', element: <Main /> }, {path: '/profile', element: <Profile />}],
+            errorElement: <ErrorPage />,
+        },
+        {
+            path: '/auth',
+            element: <Auth state='auth' />,
+            errorElement: <ErrorPage />,
+        },
+        {
+            path: '/reg',
+            element: <Auth state='reg' />,
             errorElement: <ErrorPage />,
         },
     ]);
@@ -23,4 +34,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-

@@ -1,0 +1,45 @@
+.main {
+    max-width: 1200px;
+    margin: 0 auto;;
+}
+
+.user_info {
+    display: flex;
+}
+
+.avatar {
+    min-width: 400px;
+    height: 400px;
+    background-color: #ffffff;
+    border-radius: 30px;
+    margin-right: 40px;
+}
+
+.user_extra_info {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.user_name {
+    margin: 0;
+    font-size: 48px;
+    font-family: Roboto;
+}
+
+.publications {
+    font-size: 36px;
+    text-align: center;
+    margin: 0;
+    font-weight: 600;
+    color: #000000;
+
+    span {
+        display: block;
+        color: #1f1f1f;
+    }
+}
+
+.created_at {
+    font-size: 24px;
+}

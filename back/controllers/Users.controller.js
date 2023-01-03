@@ -128,7 +128,7 @@ module.exports.userController = {
     likePost: async (req, res) => {
         try{
             const post = await Post.findByIdAndUpdate(req.params.id, {$push: { likes: req.user.id }})
-            const user = await User.findByIdAndUpdate(req.user.id, {$push: { likes: req.user.id }})
+            const user = await User.findByIdAndUpdate(req.user.id, {$push: { likes: req.params.id }})
 
             if(!post) {
                 return res.status(404).json({message: "Пост не был найден"})

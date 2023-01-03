@@ -2,3 +2,8 @@
     font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
     background-color: rgba(127, 198, 244, 0.3);
 }
+
+body {
+    margin: 0;
+    padding: 0;
+}

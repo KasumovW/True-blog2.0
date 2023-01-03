@@ -8,20 +8,24 @@ module.exports.postController = {
 
         try {
 
+            let post = ""
+
             if(req.file) {
-                await Post.create({
+                post = await Post.create({
                     title,
                     text,
                     userID: req.user.id,
                     image: req.file.path
                 })
             } else {
-                await Post.create({
+                post = await Post.create({
                     title,
                     text,
                     userID: req.user.id,
                 })
             }
+
+            await User.findByIdAndUpdate(req.user.id, {$push: { posts: post._id}})
 
             res.status(200).json({message: "Пост успешно добавлен"})
         } catch (e) {
@@ -50,6 +54,8 @@ module.exports.postController = {
             if(post.userID.toString() !== req.user.id) {
                 return res.status(400).json({error: "Это не твоя статья, руки прочь!"})
             }
+
+            await User.findByIdAndUpdate(req.user.id, {$pull: { posts: post._id}})
 
             post.remove()
 

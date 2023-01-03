@@ -16,5 +16,6 @@ router.post("/users/login", userController.login)
 router.patch("/users/avatar/:id", authMiddleware, upload.single("avatar"), userController.changeAvatar)
 router.post("/users/like/:id", authMiddleware, userController.likePost)
 router.post("/users/comment/:id", authMiddleware, userController.commentPost)
+router.delete("/users/:id", userController.deleteUser)
 
 module.exports = router

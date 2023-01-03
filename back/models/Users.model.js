@@ -1,4 +1,5 @@
 const mongoose = require("mongoose")
+const moment = require("moment")
 
 const user = mongoose.Schema({
     login: {
@@ -22,6 +23,10 @@ const user = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Post"
     }],
+    createdAt: {
+        type: String,
+        default: moment().format("DD.MM.YYYY")
+    },
     likes: [],
     comments: []
 })
