@@ -1,37 +1,41 @@
-import React from 'react';
+import { CircularProgress } from '@mui/material';
+import React, { memo } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { fetchBlogs } from '../../redux/slice/blogsSlice';
+import { Blog as IBlog } from '../../types/blog';
+import Blog from '../Blog';
 import s from './MainBlock.module.scss';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-
-import avatar from '../../assets/avatar.jpg';
 
 type Props = {};
 
 const index = (props: Props) => {
+    const dispatch = useAppDispatch();
+
+    React.useEffect(() => {
+        dispatch(fetchBlogs());
+    }, [dispatch]);
+
+    const { blogs, status, error } = useAppSelector((state) => state.blogs);
+
+    if (status === 'pending') {
+        <div className={s.loader}>
+            <CircularProgress color='primary' size='100px' />;
+        </div>;
+    }
+
+    if (error) {
+        <h1>{error}</h1>;
+    }
+
+    console.log(status, error);
+
     return (
         <div className={s.wrapper}>
-            <div className={s.blog_item}>
-                <div className={s.blog_header}>
-                    <img src={avatar} alt='Иконка не прогрузилась' />
-                    <div>
-                        <p>Zubayra</p>
-                        <p>20.12.2022</p>
-                    </div>
-                    <MoreHorizIcon className={s.edit} color='primary' />
-                </div>
-                <h1>Урок в Англомании</h1>
-                <p>
-                    Сегодня был в англомании, как обычно в 18:30, пришел на 20 реньше, урок начале на 10 минут
-                    раньше. Встретелись с Джабраилам как и договаривалис, померили размеры футболки подошел и
-                    я заказал себе сшить такую же в красном цвете. Сказал будет готово в течени 3-4 дней,
-                    будем ждать.
-                </p>
-                <img
-                    src='https://www.study.ru/uploads/server/rS22pEaa0EpHMKAA.jpg'
-                    alt='Картинка не прогрузилась'
-                />
-            </div>
+            {blogs.map((elem: IBlog) => (
+                <Blog key={elem._id} blog={elem} />
+            ))}
         </div>
     );
 };
 
-export default index;
+export default memo(index);
