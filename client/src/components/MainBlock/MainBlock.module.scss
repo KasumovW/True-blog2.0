@@ -3,7 +3,7 @@
     // height: 1000px;
     background-color: white;
     border-radius: 10px;
-
+}
     .blog_item {
         padding: 15px 20px;
 
@@ -51,9 +51,10 @@
             font-size: 22px;
             line-height: 26px;
         }
-
-        img {
-            width: 100%;
-        }
-    }
+        
+.loader {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
