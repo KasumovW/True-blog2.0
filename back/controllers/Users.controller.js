@@ -73,6 +73,17 @@ module.exports.userController = {
             res.json(e)
         }
     },
+
+    getUserById: async (req, res) => { 
+        try {
+
+            const user = await User.findById(req.params.id)
+
+            res.json(user.login)
+        } catch(e) {
+            res.json(e)
+        }
+    },
     
     deleteUser: async (req, res) => {
         try {

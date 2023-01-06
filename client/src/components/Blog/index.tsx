@@ -9,6 +9,8 @@ type Props = {
     blog: Blog;
 };
 
+const imagePlug = 'https://www.study.ru/uploads/server/rS22pEaa0EpHMKAA.jpg'
+
 const index = ({ blog }: Props) => {
     return (
         <div>
@@ -24,7 +26,7 @@ const index = ({ blog }: Props) => {
                 <h1>{blog.title}</h1>
                 <p>{blog.text}</p>
                 <img
-                    src='https://www.study.ru/uploads/server/rS22pEaa0EpHMKAA.jpg'
+                    src={blog.image ? `http://localhost:5000/${blog.image}` : imagePlug}
                     alt='Картинка не прогрузилась'
                 />
             </div>
