@@ -1,5 +1,5 @@
 import React from 'react';
-import { TextField } from '@mui/material';
+import { TextField, Button } from '@mui/material';
 
 import s from './NewPost.module.scss';
 
@@ -72,6 +72,9 @@ const index = (props: Props) => {
                     accept='.jpg, .jpeg, .png,'
                 />
             </label>
+            <div className={s.addButtonCover}>
+                <Button className={s.addButton} variant='contained'>Добавить пост</Button>
+            </div>
         </div>
     );
 };

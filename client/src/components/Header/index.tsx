@@ -34,7 +34,7 @@ const index = (props: Props) => {
                         <Link to='/'>MainPage</Link>
                     </Typography>
                     {token ? (
-                        <Button onClick={handleExit} color='secondary'>
+                        <Button onClick={handleExit} color='inherit'>
                             Logout
                         </Button>
                     ) : (
