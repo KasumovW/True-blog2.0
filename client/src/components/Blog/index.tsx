@@ -18,7 +18,7 @@ const index = ({ blog }: Props) => {
                 <div className={s.blog_header}>
                     <img src={avatar} alt='Иконка не прогрузилась' />
                     <div>
-                        <p>{blog.userID}</p>
+                        <p>{blog.user.login}</p>
                         <p>20.12.2022</p>
                     </div>
                     <MoreHorizIcon className={s.edit} color='primary' />

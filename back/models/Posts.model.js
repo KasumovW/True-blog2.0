@@ -13,9 +13,17 @@ const post = mongoose.Schema({
     image: {
         type: String
     },
-    userID: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
+    user: {
+        id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        },
+        login: {
+            type: String
+        },
+        avatar: {
+            type: String
+        }
     },
     likes: [{
         type: mongoose.Schema.Types.ObjectId,

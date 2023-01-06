@@ -10,7 +10,11 @@ export interface Blog {
     title: string;
     text: string;
     image?: string;
-    userID: string;
+    user: {
+        id: string;
+        login: string;
+        avatar: string;
+    }
     likes: string[];
     comments: Comment[];
     __v: number;
