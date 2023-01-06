@@ -8,26 +8,17 @@ module.exports.postController = {
 
         try {
 
-            let post = ""
-
-            if(req.file) {
-                post = await Post.create({
+            await Post.create({
                     title,
                     text,
                     userID: req.user.id,
                     image: req.file.path
                 })
-            } else {
-                post = await Post.create({
-                    title,
-                    text,
-                    userID: req.user.id,
-                })
-            }
+                
 
-            await User.findByIdAndUpdate(req.user.id, {$push: { posts: post._id}})
+            await User.findByIdAndUpdate(req.user.id, {$push: {posts: post._id}})
 
-            res.status(200).json({message: "Пост успешно добавлен"})
+            res.json("Успешно добавлен")
         } catch (e) {
             res.json(e)
         }

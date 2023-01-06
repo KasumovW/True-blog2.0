@@ -1,20 +1,21 @@
 import React from 'react';
 import { TextField, Button } from '@mui/material';
-
+import { addBlog } from '../../redux/slice/blogsSlice';
+import { ToastContainer, toast } from 'react-toastify';
+import { useAppDispatch } from '../../hooks/redux';
+import 'react-toastify/dist/ReactToastify.css';
 import s from './NewPost.module.scss';
-
-import image_pickker from '../../assets/avatar-picker.svg';
 
 type Props = {};
 
 interface Post {
     title: string;
-    description: string;
+    text: string;
     image: null | any;
 }
 
 const index = (props: Props) => {
-    const [post, setPost] = React.useState<Post>({ title: '', description: '', image: null });
+    const [post, setPost] = React.useState<Post>({ title: '', text: '', image: null });
 
     const imageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.target.files && setPost({ ...post, image: e.target.files[0] });
@@ -23,6 +24,20 @@ const index = (props: Props) => {
     const changePost = (e: React.ChangeEvent<HTMLInputElement>, title: string) => {
         setPost({ ...post, [title]: e.target.value });
     };
+
+    const dispatch = useAppDispatch()
+
+    const handlePost = () => {
+        if(!post.title || !post.text) {
+            toast("Заполните все поля", {
+                type: "warning"
+            })
+        } else {
+            dispatch(addBlog(post));
+        }
+    }
+
+    console.log(post)
 
     return (
         <div className={s.wrapper}>
@@ -46,15 +61,15 @@ const index = (props: Props) => {
                     margin='normal'
                     required
                     fullWidth
-                    id='description'
+                    id='text'
                     label='Введите описание нового поста...'
-                    name='description'
-                    autoComplete='description'
+                    name='text'
+                    autoComplete='text'
                     autoFocus
                     multiline
                     minRows={7}
-                    value={post.description}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => changePost(e, 'description')}
+                    value={post.text}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => changePost(e, 'text')}
                 />
             </form>
             <label htmlFor='image' className={s.banner}>
@@ -73,8 +88,9 @@ const index = (props: Props) => {
                 />
             </label>
             <div className={s.addButtonCover}>
-                <Button className={s.addButton} variant='contained'>Добавить пост</Button>
+                <Button className={s.addButton} variant='contained' onClick={handlePost}>Добавить пост</Button>
             </div>
+            <ToastContainer />
         </div>
     );
 };

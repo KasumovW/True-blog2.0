@@ -27,6 +27,8 @@ const index = (props: Props) => {
         <h1>{error}</h1>;
     }
 
+    console.log(blogs)
+
     console.log(status, error);
 
     return (

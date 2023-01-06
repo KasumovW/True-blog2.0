@@ -4,6 +4,7 @@ const moment = require("moment")
 const user = mongoose.Schema({
     login: {
         required: true,
+        unique: true,
         type: String
     },
     password: {

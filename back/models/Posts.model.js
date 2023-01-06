@@ -1,4 +1,5 @@
 const mongoose = require("mongoose")
+const moment = require("moment")
 
 const post = mongoose.Schema({
     title: {
@@ -20,6 +21,10 @@ const post = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     }],
+    createdAt: {
+        type: String,
+        default: moment().format("DD.MM.YYYY")
+    },
     comments: [{
         userID: mongoose.Schema.Types.ObjectId ,
         text: String,
