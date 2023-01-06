@@ -8,17 +8,20 @@ module.exports.postController = {
 
         try {
 
-            await Post.create({
+            const post = await Post.create({
                     title,
                     text,
-                    userID: req.user.id,
-                    image: req.file.path
+                    user: {
+                        id: req.user.id,
+                        login: req.user.login,
+                        avatar: req.user.avatar
+                    },
+                    image: req.file ? req.file.path : null
                 })
-                
 
             await User.findByIdAndUpdate(req.user.id, {$push: {posts: post._id}})
 
-            res.json("Успешно добавлен")
+            return res.json("Успешно добавлен")
         } catch (e) {
             res.json(e)
         }
