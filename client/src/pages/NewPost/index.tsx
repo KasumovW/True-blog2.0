@@ -2,8 +2,8 @@ import React from 'react';
 import { TextField, Button } from '@mui/material';
 import { addBlog } from '../../redux/slice/blogsSlice';
 import { ToastContainer, toast } from 'react-toastify';
-import { useAppDispatch } from '../../hooks/redux';
 import 'react-toastify/dist/ReactToastify.css';
+import { useAppDispatch } from '../../hooks/redux';
 import s from './NewPost.module.scss';
 
 type Props = {};
@@ -25,19 +25,19 @@ const index = (props: Props) => {
         setPost({ ...post, [title]: e.target.value });
     };
 
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
 
     const handlePost = () => {
-        if(!post.title || !post.text) {
-            toast("Заполните все поля", {
-                type: "warning"
-            })
+        if (!post.title || !post.text) {
+            toast('Заполните все поля', {
+                type: 'warning',
+            });
         } else {
             dispatch(addBlog(post));
         }
-    }
+    };
 
-    console.log(post)
+    console.log(post);
 
     return (
         <div className={s.wrapper}>
@@ -88,9 +88,10 @@ const index = (props: Props) => {
                 />
             </label>
             <div className={s.addButtonCover}>
-                <Button className={s.addButton} variant='contained' onClick={handlePost}>Добавить пост</Button>
+                <Button className={s.addButton} variant='contained' onClick={handlePost}>
+                    Добавить пост
+                </Button>
             </div>
-            <ToastContainer />
         </div>
     );
 };

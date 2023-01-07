@@ -4,6 +4,9 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { fetchBlogs } from '../../redux/slice/blogsSlice';
 import { Blog as IBlog } from '../../types/blog';
 import Blog from '../Blog';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import s from './MainBlock.module.scss';
 
 type Props = {};
@@ -27,9 +30,11 @@ const index = (props: Props) => {
         <h1>{error}</h1>;
     }
 
-    console.log(blogs)
-
-    console.log(status, error);
+    if (status === 'succeeded') {
+        toast('Заполните все поля', {
+            type: 'success',
+        });
+    }
 
     return (
         <div className={s.wrapper}>
