@@ -104,7 +104,6 @@ const index = ({ changeData, data }: Props) => {
                     </Grid>
                 </Box>
             </Box>
-            <ToastContainer />
         </div>
     );
 };

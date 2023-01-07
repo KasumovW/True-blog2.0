@@ -19,7 +19,6 @@ const Index = ({ state }: Props) => {
     const { status } = useAppSelector((state) => state.user);
 
     const [data, setData] = React.useState<UserData>({ login: '', password: '', passConf: '' });
-    console.log(data);
 
     const changeData = (e: React.ChangeEvent<HTMLInputElement>, key: string) => {
         setData({ ...data, [key]: e.target.value });
@@ -34,8 +33,8 @@ const Index = ({ state }: Props) => {
     }
 
     if (status === 'succeeded') {
-        // navigate('/');
-        // window.location.reload();
+        navigate('/');
+        window.location.reload();
     }
 
     if (state === 'auth') {

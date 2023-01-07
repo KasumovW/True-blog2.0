@@ -73,14 +73,14 @@ export const userSlice = createSlice({
     initialState,
     reducers: {
         changeToken: (_, action) => {
-            console.log(action.payload)
+            console.log(action.payload);
 
-            const {login, avatar, posts, likes} = action.payload
+            const { login, avatar, posts, likes } = action.payload;
 
-            Cookies.set("login", login)
-            Cookies.set("avatar", avatar)
-            Cookies.set("posts", posts)
-            Cookies.set("likes", likes)
+            Cookies.set('login', login);
+            Cookies.set('avatar', avatar);
+            Cookies.set('posts', posts);
+            Cookies.set('likes', likes);
             Cookies.set('token', action.payload.token);
         },
         logout: (state) => {

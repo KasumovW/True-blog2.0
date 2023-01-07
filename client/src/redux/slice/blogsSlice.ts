@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
+import { Blog } from '../../types/blog';
 
 const initialState = {
     blogs: [],
@@ -24,36 +25,63 @@ export const fetchBlogs = createAsyncThunk('blogs/fetch', async (_, { rejectWith
     }
 });
 
-export const addBlog = createAsyncThunk('blogs/add', async (data: {title: string, text: string, image: File}, { rejectWithValue, dispatch }) => {
-    
-    console.log(data)
+export const addBlog = createAsyncThunk(
+    'blogs/add',
+    async (data: { title: string; text: string; image: File }, { rejectWithValue, dispatch }) => {
+        console.log(data);
 
-    try {
+        try {
+            const formData = new FormData();
 
-        const formData = new FormData();
+            formData.append('title', data.title);
+            formData.append('text', data.text);
+            formData.append('image', data.image);
 
-        formData.append("title", data.title);
-        formData.append("text", data.text);
-        formData.append("image", data.image);
+            const response = await fetch('http://localhost:5000/posts', {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${Cookies.get('token')}`,
+                },
+                body: formData,
+            });
 
-        const response = await fetch('http://localhost:5000/posts', {
-            method: 'POST',
-            headers: {
-                Authorization: `Bearer ${Cookies.get("token")}`
-            },
-            body: formData,
-        });
+            if (!response.ok) {
+                throw new Error('Посты с сервера не получены, проблета ответа сервера!');
+            }
 
-        if (!response.ok) {
-            throw new Error('Посты с сервера не получены, проблета ответа сервера!');
+            const newData = await response.json();
+            dispatch(getPosts(newData));
+        } catch (error: any) {
+            return rejectWithValue(error.message);
         }
-
-        const newData = await response.json();
-        dispatch(getPosts(newData));
-    } catch (error: any) {
-        return rejectWithValue(error.message);
     }
-});
+);
+
+export const removeBlog = createAsyncThunk(
+    'remove/blog',
+    async (id: string, { rejectWithValue, dispatch }) => {
+        try {
+            console.log(id);
+
+            const response = await fetch(`http://localhost:5000/posts/${id}/`, {
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${Cookies.get('token')}`,
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Не удалось удалить блог');
+            }
+
+            const newData = await response.json();
+            console.log(newData);
+            dispatch(deletePost(id));
+        } catch (error: any) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
 
 export const blogSlice = createSlice({
     name: 'blog',
@@ -62,26 +90,29 @@ export const blogSlice = createSlice({
         getPosts: (state, action) => {
             state.blogs = action.payload;
         },
+        deletePost: (state, action) => {
+            state.blogs = state.blogs.filter((element: Blog) => element._id !== action.payload);
+        },
     },
     extraReducers: (builder) => {
         builder.addCase(fetchBlogs.pending, (state: any) => {
             state.status = 'pending';
             state.error = null;
         });
-        builder.addCase(fetchBlogs.fulfilled, (state: any, action) => {
-            state.status = 'succeeded';
+        builder.addCase(fetchBlogs.fulfilled, (state: any) => {
+            state.status = null;
             state.error = null;
         });
         builder.addCase(fetchBlogs.rejected, (state: any, action) => {
             state.status = 'failed';
             state.error = action.payload;
         });
-        
+
         builder.addCase(addBlog.pending, (state: any) => {
             state.status = 'pending';
             state.error = null;
         });
-        builder.addCase(addBlog.fulfilled, (state: any, action) => {
+        builder.addCase(addBlog.fulfilled, (state: any) => {
             state.status = 'succeeded';
             state.error = null;
         });
@@ -89,7 +120,20 @@ export const blogSlice = createSlice({
             state.status = 'failed';
             state.error = action.payload;
         });
+
+        builder.addCase(removeBlog.pending, (state: any) => {
+            state.status = 'pending';
+            state.error = null;
+        });
+        builder.addCase(removeBlog.fulfilled, (state: any) => {
+            state.status = 'succeeded';
+            state.error = null;
+        });
+        builder.addCase(removeBlog.rejected, (state: any, action) => {
+            state.status = 'failed';
+            state.error = action.payload;
+        });
     },
 });
 
-export const { getPosts } = blogSlice.actions;
+export const { getPosts, deletePost } = blogSlice.actions;
