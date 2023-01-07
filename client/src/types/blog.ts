@@ -11,9 +11,15 @@ export interface Blog {
     text: string;
     image?: string;
     user: {
-        id: string;
+        _id: string;
         login: string;
         avatar: string;
+        password: string;
+        role: string;
+        posts: string[];
+        likes: string[];
+        comments: string[];
+        createdAt: string;
     }
     likes: string[];
     comments: Comment[];

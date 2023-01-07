@@ -18,7 +18,7 @@ const user = mongoose.Schema({
     },
     avatar: {
         type: String,
-        default: "/uploads/avatar_plug.svg"
+        default: "/uploads/avatar_plug.png"
     },
     posts: [{
         type: mongoose.Schema.Types.ObjectId,

@@ -11,11 +11,7 @@ module.exports.postController = {
             const post = await Post.create({
                     title,
                     text,
-                    user: {
-                        id: req.user.id,
-                        login: req.user.login,
-                        avatar: req.user.avatar
-                    },
+                    user: req.user.id,
                     image: req.file ? req.file.path : null
                 })
 
@@ -29,11 +25,22 @@ module.exports.postController = {
 
     getPosts: async (req, res) => {
         try {
-            const posts = await Post.find()
+            const posts = await Post.find().populate("user").exec()
 
             res.status(200).json(posts)
         } catch (e) {
             res.json(e)
+        }
+    },
+
+    getOne: async (req, res) => {
+        try {
+            const {id} = req.params
+            const post = Post.findById(id).populate("user").exec()
+
+            res.json(post)
+        } catch (error) {
+            res.json(error)
         }
     },
 
