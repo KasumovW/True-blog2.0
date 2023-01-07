@@ -26,8 +26,8 @@ const index = ({ blog }: Props) => {
                     </Link>
                     <MoreHorizIcon className={s.edit} color='primary' />
                 </div>
-                <h1>{blog.title}</h1>
-                <p>{blog.text}</p>
+                <h1 className={s.blog_title}>{blog.title}</h1>
+                <p className={s.blog_text}>{blog.text}</p>
                 {blog.image && <img
                     src={`http://localhost:5000/${blog.image}`}
                     alt='Картинка не прогрузилась'
