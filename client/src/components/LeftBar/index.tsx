@@ -1,21 +1,29 @@
 import React from 'react';
 import s from './LeftBar.module.scss';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
-
-import avatar from '../../assets/avatar.jpg';
+import Cookies from 'js-cookie';
+// import avatar from '../../assets/avatar.jpg';
 import { Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 type Props = {};
 
 const index = (props: Props) => {
+
+    const token = Cookies.get('token');    
+    const login = Cookies.get('login')
+    const avatar: any = Cookies.get('avatar')
+
     return (
+        <>
+        {token ? 
         <div className={s.wrapper}>
             <div>
-                <img src={avatar} alt='Picture didnt load' />
+                <img src={`http://localhost:5000${avatar}`} alt='Picture didnt load' />
                 <div>
                     <h3>
-                        <BorderColorIcon color='primary' /> Zubayra Kasumow
+                        {login}
+                        <BorderColorIcon color='primary' /> 
                     </h3>
                     <p>
                         Frontend developer - работа в компании "ZeroLab".
@@ -33,6 +41,8 @@ const index = (props: Props) => {
                 </Button>
             </Link>
         </div>
+        : null}
+        </>
     );
 };
 
