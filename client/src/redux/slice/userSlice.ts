@@ -6,6 +6,7 @@ const initialState = {
     login: '',
     password: '',
     token: Cookies.get('token') || null,
+    watchingUser: undefined,
 
     //'pending' | 'succeeded' | 'failed' | null
     status: null,
@@ -63,6 +64,26 @@ export const registration = createAsyncThunk('user/reg', async (data: UserData, 
     }
 });
 
+export const getUserByID = createAsyncThunk('user/getUser', async (userID: string, { rejectWithValue }) => {
+    try {
+        const response = await fetch(`http://localhost:5000/users/${userID}`, {
+            method: 'get',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('Вы не смогли зарегистрироваться, ошибка сервера!');
+        }
+
+        return await response.json();
+        // console.log(newData);
+    } catch (error: any) {
+        return rejectWithValue(error.message);
+    }
+});
+
 const setError = (state: { status: string; error: Error }, action: { payload: any }) => {
     state.status = 'failed';
     state.error = action.payload;
@@ -114,6 +135,20 @@ export const userSlice = createSlice({
         },
         //@ts-ignore
         [registration.rejected]: setError,
+
+        //@ts-ignore
+        [getUserByID.pending]: (state: { status: string; error: null }) => {
+            state.status = 'pending';
+            state.error = null;
+        },
+        //@ts-ignore
+        [getUserByID.fulfilled]: (state: any, action: any) => {
+            state.status = 'succeeded';
+            state.watchingUser = action.payload;
+            state.error = null;
+        },
+        //@ts-ignore
+        [getUserByID.rejected]: setError,
     },
 });
 
