@@ -25,7 +25,10 @@ module.exports.postController = {
 
     getPosts: async (req, res) => {
         try {
-            const posts = await Post.find().populate("user").exec()
+            const { limit, skip } = req.query
+            const posts = await Post.find({}).skip(skip).limit(limit).populate("user").exec()
+
+            console.log(req.query)
 
             res.status(200).json(posts)
         } catch (e) {
