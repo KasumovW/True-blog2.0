@@ -41,9 +41,11 @@ const index = ({ blog }: Props) => {
                     <div className={s.dropDown}>
                         <MoreHorizIcon className={s.edit} color='primary' />
                         <div className={s.dropDownContent}>
-                            <p>
-                                Изменить <EditIcon />
-                            </p>
+                            <Link to={`/change-post/${blog._id}`}>
+                                <p>
+                                    Изменить <EditIcon />
+                                </p>
+                            </Link>
                             <p onClick={handleRemove}>
                                 Удалить <DeleteIcon />
                             </p>

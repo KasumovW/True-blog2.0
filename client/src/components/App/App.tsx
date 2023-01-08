@@ -15,7 +15,8 @@ const App: React.FC = () => {
             element: <Layout />,
             children: [
                 { path: '/', element: <Main /> },
-                { path: '/new-post', element: <NewPost /> },
+                { path: '/new-post', element: <NewPost state='add' /> },
+                { path: '/change-post/:id', element: <NewPost state='edit' /> },
                 { path: '/profile', element: <Profile /> },
             ],
             errorElement: <ErrorPage />,
