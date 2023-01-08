@@ -5,6 +5,7 @@ import Camera from '@mui/icons-material/CameraAlt'
 import { Button, Input } from '@mui/material'
 import { editUser } from '../../redux/slice/userSlice'
 import { useAppDispatch } from '../../hooks/redux'
+import Cookies from 'js-cookie'
 
 type User = {
     user: {
@@ -12,22 +13,24 @@ type User = {
         role: string,
         avatar: string,
         posts: string[],
-        likes: string[]
+        likes: string[],
+        id: string
     }
 }
 
 const Index = (props: User) => {
 
-    const {login, avatar, posts, likes} = props.user
+    const {posts, likes, id} = props.user
     const dispatch = useAppDispatch()
-    
-    const [changeData, setChangeData] = useState<{login: string, file: File | undefined}>({
+
+    const [login, setLogin] = useState<any>(props.user.login),
+        [avatar, setAvatar] = useState<any>(props.user.avatar),
+        [changeData, setChangeData] = useState<{login: string, file: File | undefined}>({
         login: login,
         file: undefined
     }),
         [isEditing, setIsEditing] = useState<boolean>(false),
-        [preview, setPreview] = useState<any>(null),
-        [isChanged, setIsChanged] = useState<any>(false)
+        [preview, setPreview] = useState<any>(null)
 
     const inputFile = useRef<any>(null),
         url = "http://localhost:5000/"
@@ -41,9 +44,9 @@ const Index = (props: User) => {
         var url = reader.readAsDataURL(file);
 
       
-         reader.onloadend = function () {
+        reader.onloadend = function () {
             setPreview(reader.result)
-          }
+        }
         setIsEditing(true)
     }
 
@@ -59,26 +62,35 @@ const Index = (props: User) => {
     const sendData = () => {
         dispatch(editUser(changeData))
         setIsEditing(false)
-        setIsChanged(true)
+        if(changeData.file) {
+            setAvatar(preview)
+        }
+        if(changeData.login) {
+            setLogin(changeData.login)
+        }
     }
+
+    const userId = Cookies.get("userId")
 
     return (
     <div className={s.user_info}>
         <input id='file' type="file" className={s.user_file_input} ref={inputFile} onChange={checkfile}/>
         <div className={s.avatar}>
+            {id === userId && 
             <label className={s.label} htmlFor="file">
                 <Camera />
             </label>
-            <img src={!isChanged ? url + avatar : !isEditing && preview ? preview : url + avatar} alt="" />
+            }
+            <img src={avatar} alt="" />
             {isEditing && <img className={s.preview_image} src={preview} alt="" />}
         </div>
         <div className={s.user_extra_info}>
             <div className={s.flex_container}>
                 <div>
                     <h1 className={s.user_name}>
-                        {!isChanged ? !isEditing && login : !isEditing && changeData.login} 
+                        {!isEditing && login} 
                         <Input type="text" className={isEditing ? `${s.user_name_input + " " + s.show}` : s.user_name_input} onChange={(e) => checkLogin(e)} value={changeData.login}/>
-                        <BorderColorIcon className={s.pen} color='primary' onClick={edit}/>
+                        {id === userId && <BorderColorIcon className={s.pen} color='primary' onClick={edit}/>}
                     </h1>
                     <p className={s.created_at}>
                         Дата создания: <span>04.03.2023</span>

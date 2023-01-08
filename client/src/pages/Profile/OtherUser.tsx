@@ -13,14 +13,16 @@ interface userInfo {
     role: string,
     avatar: string,
     posts: string[],
-    likes: string[]
+    likes: string[],
+    id: string
 }
 
 const OtherUser = (props: Props) => {
     const dispatch = useAppDispatch()
     const userInfo: userInfo | any = useAppSelector((state) => state.user.watchingUser)
 
-    const {userID} = useParams()
+    const {userID} = useParams(),
+        url = "http://localhost:5000/"
 
     useEffect(() => {
         if(userID) {
@@ -32,12 +34,23 @@ const OtherUser = (props: Props) => {
         }
     }, [])
 
+
+    let user: any = ""
+
+    if(userInfo) {
+        const {login, avatar, posts, likes, role} = userInfo
+
+        user = {
+            login, avatar: url + avatar, id: userID, posts, likes, role
+        }
+    }
+    
   return (
     <div className={s.main}>
         {
             userInfo ? 
-            <UserInfo user={userInfo}/> :
-            <div className={s.user_info}><CircularProgress style={{margin: "auto"}} /></div>
+            <UserInfo user={user}/> :
+            <div className={s.user_info}><CircularProgress style={{margin: "auto", display: "block"}} /></div>
         }
     </div>
   )

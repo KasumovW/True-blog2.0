@@ -19,7 +19,7 @@ module.exports.postController = {
 
             return res.json("Успешно добавлен")
         } catch (e) {
-            res.json(e)
+            res.json({message: "Не удалось добавить пост", error: e})
         }
     },
 
@@ -32,7 +32,7 @@ module.exports.postController = {
 
             res.status(200).json(posts.reverse())
         } catch (e) {
-            res.json(e)
+            res.json({message: "Не удалось получить посты", error: e})
         }
     },
 
@@ -43,7 +43,7 @@ module.exports.postController = {
 
             res.json(post)
         } catch (error) {
-            res.json(error)
+            res.json({message: "Не удалось получить пост", error: e})
         }
     },
 
