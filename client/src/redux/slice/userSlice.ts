@@ -67,10 +67,37 @@ export const registration = createAsyncThunk('user/reg', async (data: UserData, 
 export const getUserByID = createAsyncThunk('user/getUser', async (userID: string, { rejectWithValue }) => {
     try {
         const response = await fetch(`http://localhost:5000/users/${userID}`, {
-            method: 'get',
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             },
+        });
+
+        if (!response.ok) {
+            throw new Error('Вы не смогли зарегистрироваться, ошибка сервера!');
+        }
+
+        return await response.json();
+        // console.log(newData);
+    } catch (error: any) {
+        return rejectWithValue(error.message);
+    }
+});
+
+export const editUser = createAsyncThunk('user/editUser', async (data: {login: string, file: File | any}, { rejectWithValue }) => {
+    try {
+        const userID = Cookies.get("userId")
+
+        const formData = new FormData();
+        formData.append("login", data.login)
+        formData.append("avatar", data.file)
+
+        const response = await fetch(`http://localhost:5000/users/${userID}`, {
+            method: 'PATCH',
+            headers: {
+                Authorization: `Bearer ${Cookies.get("token")}`
+            },
+            body: formData
         });
 
         if (!response.ok) {
@@ -154,6 +181,23 @@ export const userSlice = createSlice({
         },
         //@ts-ignore
         [getUserByID.rejected]: setError,
+        //@ts-ignore
+        [editUser.pending]: (state: { status: string; error: null }) => {
+            state.status = 'pending';
+            state.error = null;
+        },
+        //@ts-ignore
+        [editUser.fulfilled]: (state: any, action: any) => {
+            state.status = 'succeeded';
+            state.error = null;
+            Cookies.remove("login", action.payload.login)
+            Cookies.remove("avatar", action.payload.avatar)
+            Cookies.set("login", action.payload.login)
+            Cookies.set("avatar", action.payload.avatar)
+            console.log(action.payload)
+        },
+        //@ts-ignore
+        [editUser.rejected]: setError,
     },
 });
 

@@ -46,7 +46,7 @@ export const addBlog = createAsyncThunk(
             });
 
             if (!response.ok) {
-                throw new Error('Посты с сервера не получены, проблета ответа сервера!');
+                throw new Error('Не удалось добавить пост!');
             }
 
             const newData = await response.json();
