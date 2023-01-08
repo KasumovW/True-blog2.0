@@ -1,20 +1,26 @@
 import React from 'react';
 import { TextField, Button } from '@mui/material';
-import { addBlog } from '../../redux/slice/blogsSlice';
-import { ToastContainer, toast } from 'react-toastify';
+import { addBlog, editBlog } from '../../redux/slice/blogsSlice';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAppDispatch } from '../../hooks/redux';
 import s from './NewPost.module.scss';
+import { useParams } from 'react-router-dom';
 
-type Props = {};
+type Props = {
+    state: 'edit' | 'add';
+};
 
-interface Post {
+export interface Post {
     title: string;
     text: string;
     image: null | any;
 }
 
-const index = (props: Props) => {
+const index = ({ state }: Props) => {
+    const { id } = useParams();
+    console.log(id);
+
     const [post, setPost] = React.useState<Post>({ title: '', text: '', image: null });
 
     const imageHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,7 +39,7 @@ const index = (props: Props) => {
                 type: 'warning',
             });
         } else {
-            dispatch(addBlog(post));
+            state === 'edit' ? dispatch(editBlog({ post, id })) : dispatch(addBlog(post));
         }
     };
 

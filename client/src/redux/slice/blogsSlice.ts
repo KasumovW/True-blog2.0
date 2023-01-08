@@ -1,6 +1,13 @@
+import { authorization } from './userSlice';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
 import { Blog } from '../../types/blog';
+import { Post } from '../../pages/NewPost';
+
+type ChangePost = {
+    post: Post;
+    id: string | undefined;
+};
 
 const initialState = {
     blogs: [],
@@ -25,37 +32,34 @@ export const fetchBlogs = createAsyncThunk('blogs/fetch', async (_, { rejectWith
     }
 });
 
-export const addBlog = createAsyncThunk(
-    'blogs/add',
-    async (data: { title: string; text: string; image: File }, { rejectWithValue, dispatch }) => {
-        console.log(data);
+export const addBlog = createAsyncThunk('blogs/add', async (data: Post, { rejectWithValue, dispatch }) => {
+    console.log(data);
 
-        try {
-            const formData = new FormData();
+    try {
+        const formData = new FormData();
 
-            formData.append('title', data.title);
-            formData.append('text', data.text);
-            formData.append('image', data.image);
+        formData.append('title', data.title);
+        formData.append('text', data.text);
+        formData.append('image', data.image);
 
-            const response = await fetch('http://localhost:5000/posts', {
-                method: 'POST',
-                headers: {
-                    Authorization: `Bearer ${Cookies.get('token')}`,
-                },
-                body: formData,
-            });
+        const response = await fetch('http://localhost:5000/posts', {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${Cookies.get('token')}`,
+            },
+            body: formData,
+        });
 
-            if (!response.ok) {
-                throw new Error('Не удалось добавить пост!');
-            }
-
-            const newData = await response.json();
-            dispatch(getPosts(newData));
-        } catch (error: any) {
-            return rejectWithValue(error.message);
+        if (!response.ok) {
+            throw new Error('Посты с сервера не получены, проблета ответа сервера!');
         }
+
+        const newData = await response.json();
+        dispatch(getPosts(newData));
+    } catch (error: any) {
+        return rejectWithValue(error.message);
     }
-);
+});
 
 export const removeBlog = createAsyncThunk(
     'remove/blog',
@@ -83,6 +87,40 @@ export const removeBlog = createAsyncThunk(
     }
 );
 
+export const editBlog = createAsyncThunk(
+    'edit/blog',
+    async ({ post, id }: ChangePost, { rejectWithValue, dispatch }) => {
+        try {
+            console.log(post);
+
+            const formData = new FormData();
+
+            formData.append('title', post.title);
+            formData.append('text', post.text);
+            formData.append('image', post.image);
+
+            const response = await fetch(`http://localhost:5000/posts/${id}/`, {
+                method: 'PATCH',
+                //@ts-ignore
+                headers: {
+                    authorization: `Bearer ${Cookies.get('token')}`,
+                    body: formData,
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Не удалось изменить пост');
+            }
+
+            const newData = await response.json();
+            dispatch(changePost(post));
+            console.log(newData);
+        } catch (error: any) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
 export const blogSlice = createSlice({
     name: 'blog',
     initialState,
@@ -92,6 +130,18 @@ export const blogSlice = createSlice({
         },
         deletePost: (state, action) => {
             state.blogs = state.blogs.filter((element: Blog) => element._id !== action.payload);
+        },
+        changePost: (state, action) => {
+            state.blogs.map((elem: Blog) =>
+                elem._id === action.payload.id
+                    ? {
+                          ...elem,
+                          title: action.payload.title,
+                          text: action.payload.text,
+                          image: 'asdf',
+                      }
+                    : elem
+            );
         },
     },
     extraReducers: (builder) => {
@@ -136,4 +186,4 @@ export const blogSlice = createSlice({
     },
 });
 
-export const { getPosts, deletePost } = blogSlice.actions;
+export const { getPosts, deletePost, changePost } = blogSlice.actions;
