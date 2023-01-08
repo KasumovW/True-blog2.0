@@ -27,15 +27,10 @@ const OtherUser = (props: Props) => {
     const dispatch = useAppDispatch()
     const userInfo: userInfo | any = useAppSelector((state) => state.user.watchingUser)
 
-    const checkfile = () => {
-        console.log(inputFile.current.files[0])
-
-        if(inputFile) {
-            setFile(inputFile.current.files[0])
-        }
-    }
 
     const {userID} = useParams()
+
+    console.log(userID)
 
     useEffect(() => {
         if(userID) {

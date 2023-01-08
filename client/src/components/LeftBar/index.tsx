@@ -20,7 +20,7 @@ const index = (props: Props) => {
         <div className={s.wrapper}>
             <div>
                 <Link to="/profile">
-                <img src={`http://localhost:5000${avatar}`} alt='Picture didnt load' />
+                <img src={`http://localhost:5000/${avatar}`} alt='Picture didnt load' />
                 <div>
                     <h3>
                         {login}
