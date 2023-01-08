@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import s from "./Profile.module.scss"
 import BorderColorIcon from '@mui/icons-material/BorderColor'
+import { CircularProgress } from '@mui/material'
 import Camera from '@mui/icons-material/CameraAlt'
 import Cookies from 'js-cookie'
 import { useAppDispatch, useAppSelector } from '../../hooks/redux'
@@ -17,7 +18,7 @@ interface userInfo {
     likes: string[]
 }
 
-const Index = (props: Props) => {
+const OtherUser = (props: Props) => {
     
     const [file, setFile] = useState<any>()
 
@@ -33,10 +34,7 @@ const Index = (props: Props) => {
         }
     }
 
-    const login: any = Cookies.get('login'),
-        avatar: any = Cookies.get('avatar'),
-        url = "http://localhost:5000",
-        {userID} = useParams()
+    const {userID} = useParams()
 
     useEffect(() => {
         if(userID) {
@@ -46,9 +44,12 @@ const Index = (props: Props) => {
 
   return (
     <div className={s.main}>
-        <UserInfo login={login} avatar={avatar} />
+        {userInfo ? 
+        <UserInfo login={userInfo.login} avatar={userInfo.avatar}/> :
+        <div className={s.user_info}><CircularProgress style={{margin: "auto"}} /></div>
+        }
     </div>
   )
 }
 
-export default Index
+export default OtherUser

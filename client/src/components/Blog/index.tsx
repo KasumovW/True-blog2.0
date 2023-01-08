@@ -28,11 +28,8 @@ const index = ({ blog }: Props) => {
         <div className={s.blog_wrapper}>
             <div className={s.blog_item}>
                 <div className={s.blog_header}>
-                    <Link style={{ display: 'flex' }} to={`/user/${blog.user._id}`}>
-                        <img
-                            src={blog.user.avatar && `http://localhost:5000${blog.user.avatar}`}
-                            alt='Иконка не прогрузилась'
-                        />
+                    <Link style={{display: "flex"}} to={`/profile/${blog.user._id}`}>
+                        <img src={blog.user.avatar && `http://localhost:5000${blog.user.avatar}`} alt='Иконка не прогрузилась' />
                         <div>
                             <p>{blog.user.login}</p>
                             <p>20.12.2022</p>

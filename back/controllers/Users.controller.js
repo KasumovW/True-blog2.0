@@ -77,10 +77,10 @@ module.exports.userController = {
 
     getUserById: async (req, res) => { 
         try {
+            const { id } = req.params
+            const user = await User.findById(id).populate("posts").exec()
 
-            const user = await User.findById(req.params.id)
-
-            res.json(user.login)
+            res.json({login: user.login, role: user.role, posts: user.posts, likes: user.likes, avatar: user.avatar, createdAt: user.createdAt})
         } catch(e) {
             res.json(e)
         }
@@ -88,7 +88,7 @@ module.exports.userController = {
     
     deleteUser: async (req, res) => {
         try {
-            const user = await User.findByIdAndRemove(req.params.id)
+            await User.findByIdAndRemove(req.params.id)
 
             res.json("User was deleted")
         }
