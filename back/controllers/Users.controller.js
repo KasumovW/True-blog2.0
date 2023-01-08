@@ -58,8 +58,9 @@ module.exports.userController = {
             }
 
             const token = generateAccessToken(user._id, user.login, user.role, user.avatar)
+            //const {login, role, posts, likes, comments, avatar} = user
 
-            res.json({token, login: user.login, role: user.role, posts: user.posts, likes: user.likes, comments: user.comments, avatar: user.avatar})
+            res.json({token, id: user._id, login: user.login, role: user.role, posts: user.posts, likes: user.likes, comments: user.comments, avatar: user.avatar})
         } catch (e) {
             res.json(e)
         }
@@ -77,10 +78,11 @@ module.exports.userController = {
 
     getUserById: async (req, res) => { 
         try {
+            const { id } = req.params
+            const user = await User.findById(id).populate("posts").exec()
 
-            const user = await User.findById(req.params.id)
-
-            res.json(user.login)
+            res.json({login: user.login, role: user.role, posts: user.posts, likes: user.likes, avatar: user.avatar, createdAt: user.createdAt
+            })
         } catch(e) {
             res.json(e)
         }
@@ -88,7 +90,9 @@ module.exports.userController = {
     
     deleteUser: async (req, res) => {
         try {
-            const user = await User.findByIdAndRemove(req.params.id)
+            await Post.deleteMany({user: req.params.id})
+
+            await User.findByIdAndRemove(req.params.id)
 
             res.json("User was deleted")
         }
@@ -97,19 +101,23 @@ module.exports.userController = {
         }
     },
 
-    changeAvatar: async (req, res) => {
+    editUser: async (req, res) => {
         try {
-            const user = await User.findByIdAndUpdate(req.params.id, {$set: {avatar: req.file.path}})
+            const { login } = req.body
+
+            const user = await User.findByIdAndUpdate(req.params.id, {$set: {avatar: req.file && req.file.path, login}}, )
 
             if(!user) {
                 return res.status(400).json({message: "Пользователь не найден"})
             }
 
-            if(user._id !== req.params.id) {
+            if(user._id.toString() !== req.params.id) {
                 return res.status(400).json({message: "У вас недостаточно прав"})
             }
 
-            res.json("Фото профиля было успешно изменено")
+            const editedUser = await User.findById(req.params.id)
+
+            res.json(editedUser)
         }
         catch (e) {
             res.json("Не удалось изменить фото профиля")

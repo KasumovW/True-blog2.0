@@ -18,21 +18,23 @@ const index = (props: Props) => {
             {token ? (
                 <div className={s.wrapper}>
                     <div>
-                        <img src={`http://localhost:5000${avatar}`} alt='Picture didnt load' />
-                        <div>
-                            <h3>
-                                {login}
-                                <BorderColorIcon color='primary' />
-                            </h3>
-                            <p>
-                                Frontend developer - работа в компании "ZeroLab".
-                                <br />
-                                <br />
-                                Стек технологий:
-                                <br />- JavaScript / TypeScript
-                            </p>
-                            <a href=''>Read more</a>
-                        </div>
+                        <Link to='/profile'>
+                            <img src={`http://localhost:5000/${avatar}`} alt='Picture didnt load' />
+                            <div>
+                                <h3>
+                                    {login}
+                                    <BorderColorIcon color='primary' />
+                                </h3>
+                                <p>
+                                    Frontend developer - работа в компании "ZeroLab".
+                                    <br />
+                                    <br />
+                                    Стек технологий:
+                                    <br />- JavaScript / TypeScript
+                                </p>
+                                <a href=''>Read more</a>
+                            </div>
+                        </Link>
                     </div>
                     <Link to='/new-post'>
                         <Button fullWidth variant='contained' sx={{ mt: 3 }} color='primary'>

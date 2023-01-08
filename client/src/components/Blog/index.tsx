@@ -9,6 +9,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Blog } from '../../types/blog';
 import { useAppDispatch } from '../../hooks/redux';
 import { removeBlog } from '../../redux/slice/blogsSlice';
+import Cookies from 'js-cookie';
 
 type Props = {
     blog: Blog;
@@ -24,13 +25,15 @@ const index = ({ blog }: Props) => {
         console.log(blog._id);
     };
 
+    const userId = Cookies.get('userId');
+
     return (
         <div className={s.blog_wrapper}>
             <div className={s.blog_item}>
                 <div className={s.blog_header}>
-                    <Link style={{ display: 'flex' }} to={`/user/${blog.user._id}`}>
+                    <Link style={{ display: 'flex' }} to={`/profile/${blog.user._id}`}>
                         <img
-                            src={blog.user.avatar && `http://localhost:5000${blog.user.avatar}`}
+                            src={blog.user.avatar && `http://localhost:5000/${blog.user.avatar}`}
                             alt='Иконка не прогрузилась'
                         />
                         <div>
@@ -38,19 +41,21 @@ const index = ({ blog }: Props) => {
                             <p>20.12.2022</p>
                         </div>
                     </Link>
-                    <div className={s.dropDown}>
-                        <MoreHorizIcon className={s.edit} color='primary' />
-                        <div className={s.dropDownContent}>
-                            <Link to={`/change-post/${blog._id}`}>
-                                <p>
-                                    Изменить <EditIcon />
+                    {blog.user._id === userId && (
+                        <div className={s.dropDown}>
+                            <MoreHorizIcon className={s.edit} color='primary' />
+                            <div className={s.dropDownContent}>
+                                <Link to={`/change-post/${blog._id}`}>
+                                    <p>
+                                        Изменить <EditIcon />
+                                    </p>
+                                </Link>
+                                <p onClick={handleRemove}>
+                                    Удалить <DeleteIcon />
                                 </p>
-                            </Link>
-                            <p onClick={handleRemove}>
-                                Удалить <DeleteIcon />
-                            </p>
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </div>
                 <h1 className={s.blog_title}>{blog.title}</h1>
                 <p className={s.blog_text}>{blog.text}</p>

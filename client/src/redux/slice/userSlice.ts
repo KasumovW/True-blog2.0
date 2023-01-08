@@ -6,6 +6,7 @@ const initialState = {
     login: '',
     password: '',
     token: Cookies.get('token') || null,
+    watchingUser: undefined,
 
     //'pending' | 'succeeded' | 'failed' | null
     status: null,
@@ -63,6 +64,53 @@ export const registration = createAsyncThunk('user/reg', async (data: UserData, 
     }
 });
 
+export const getUserByID = createAsyncThunk('user/getUser', async (userID: string, { rejectWithValue }) => {
+    try {
+        const response = await fetch(`http://localhost:5000/users/${userID}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('Вы не смогли зарегистрироваться, ошибка сервера!');
+        }
+
+        return await response.json();
+        // console.log(newData);
+    } catch (error: any) {
+        return rejectWithValue(error.message);
+    }
+});
+
+export const editUser = createAsyncThunk('user/editUser', async (data: {login: string, file: File | any}, { rejectWithValue }) => {
+    try {
+        const userID = Cookies.get("userId")
+
+        const formData = new FormData();
+        formData.append("login", data.login)
+        formData.append("avatar", data.file)
+
+        const response = await fetch(`http://localhost:5000/users/${userID}`, {
+            method: 'PATCH',
+            headers: {
+                Authorization: `Bearer ${Cookies.get("token")}`
+            },
+            body: formData
+        });
+
+        if (!response.ok) {
+            throw new Error('Вы не смогли зарегистрироваться, ошибка сервера!');
+        }
+
+        return await response.json();
+        // console.log(newData);
+    } catch (error: any) {
+        return rejectWithValue(error.message);
+    }
+});
+
 const setError = (state: { status: string; error: Error }, action: { payload: any }) => {
     state.status = 'failed';
     state.error = action.payload;
@@ -75,9 +123,11 @@ export const userSlice = createSlice({
         changeToken: (_, action) => {
             console.log(action.payload);
 
-            const { login, avatar, posts, likes } = action.payload;
+            const { id, login, avatar, posts, likes, role } = action.payload;
 
+            Cookies.set('userId', id);
             Cookies.set('login', login);
+            Cookies.set('role', role);
             Cookies.set('avatar', avatar);
             Cookies.set('posts', posts);
             Cookies.set('likes', likes);
@@ -87,6 +137,9 @@ export const userSlice = createSlice({
             state.token = null;
             Cookies.remove('token');
         },
+        removeUserId: state => {
+            state.watchingUser = undefined
+        }
     },
     extraReducers: {
         //@ts-ignore
@@ -114,7 +167,38 @@ export const userSlice = createSlice({
         },
         //@ts-ignore
         [registration.rejected]: setError,
+
+        //@ts-ignore
+        [getUserByID.pending]: (state: { status: string; error: null }) => {
+            state.status = 'pending';
+            state.error = null;
+        },
+        //@ts-ignore
+        [getUserByID.fulfilled]: (state: any, action: any) => {
+            state.status = 'succeeded';
+            state.watchingUser = action.payload;
+            state.error = null;
+        },
+        //@ts-ignore
+        [getUserByID.rejected]: setError,
+        //@ts-ignore
+        [editUser.pending]: (state: { status: string; error: null }) => {
+            state.status = 'pending';
+            state.error = null;
+        },
+        //@ts-ignore
+        [editUser.fulfilled]: (state: any, action: any) => {
+            state.status = 'succeeded';
+            state.error = null;
+            Cookies.remove("login", action.payload.login)
+            Cookies.remove("avatar", action.payload.avatar)
+            Cookies.set("login", action.payload.login)
+            Cookies.set("avatar", action.payload.avatar)
+            console.log(action.payload)
+        },
+        //@ts-ignore
+        [editUser.rejected]: setError,
     },
 });
 
-export const { changeToken, logout } = userSlice.actions;
+export const { changeToken, logout, removeUserId } = userSlice.actions;

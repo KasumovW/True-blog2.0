@@ -1,0 +1,127 @@
+.user_info {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 30px;
+    position: relative;
+
+    .user_file_input {
+        display: none;
+    }
+
+    .user_name_input {
+        display: none;
+        font-size: 48px;
+        width: 300px;
+    }
+
+    .show {
+        display: inline-block;
+    }
+
+    .label {
+        width: 300px;
+        height: 300px;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        opacity: 0;
+        user-select: none;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+
+        svg {
+            width: 50px;
+            height: 50px;
+            color: #ffffff;
+        }
+    }
+
+    .avatar:hover {
+        .label {
+            opacity: 1;
+            transition: .2s;
+        }
+    }
+}
+
+.avatar {
+    display: flex;
+    justify-content: center;;
+    border-radius: 50%;
+    margin: 0 auto;
+    position: relative;
+
+    img {
+        width: 300px;
+        height: 300px;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+
+    .preview_image {
+        position: absolute;
+        right: 250px;
+        width: 150px;
+        height: 150px;
+    }
+}
+
+.user_extra_info {
+    padding: 0 100px;
+    // display: flex;
+    // justify-content: end;
+    // flex-direction: column;
+}
+
+.flex_container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.user_name {
+    margin: 0;
+    font-size: 48px;
+    font-family: Roboto;
+    cursor: default;
+
+    .pen {
+        width: 30px;
+        height: 30px;
+        opacity: 0;
+        transition: .2s;
+        cursor: pointer;
+    }
+
+    &:hover {
+        .pen {
+            opacity: 1;
+            transition: .2s;
+        }
+    }
+}
+
+.publications {
+    font-size: 36px;
+    text-align: center;
+    margin: 0;
+    font-weight: 600;
+    color: #000000;
+
+    span {
+        display: block;
+        color: #1f1f1f;
+    }
+}
+
+.created_at {
+    font-size: 24px;
+}
+
+.button_wrapper {
+    display: flex;
+    justify-content: end;
+}
