@@ -35,9 +35,11 @@ const index = ({ state }: Props) => {
 
     const handlePost = () => {
         if (!post.title || !post.text) {
-            toast('Заполните все поля', {
-                type: 'warning',
-            });
+            if(state !== 'edit') {
+                toast('Заполните все поля', {
+                    type: 'warning',
+                });
+            }
         } else {
             state === 'edit' ? dispatch(editBlog({ post, id })) : dispatch(addBlog(post));
         }
