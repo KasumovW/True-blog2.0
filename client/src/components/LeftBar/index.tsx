@@ -1,10 +1,12 @@
 import React from 'react';
 import s from './LeftBar.module.scss';
-import BorderColorIcon from '@mui/icons-material/BorderColor';
 import Cookies from 'js-cookie';
 // import avatar from '../../assets/avatar.jpg';
 import { Button } from '@mui/material';
 import { Link } from 'react-router-dom';
+
+import BorderColorIcon from '@mui/icons-material/BorderColor';
+import LockIcon from '@mui/icons-material/Lock';
 
 type Props = {};
 
@@ -14,36 +16,46 @@ const index = (props: Props) => {
     const avatar: any = Cookies.get('avatar');
 
     return (
-        <>
-            {token ? (
-                <div className={s.wrapper}>
-                    <div>
-                        <Link to='/profile'>
-                            <img src={`http://localhost:5000/${avatar}`} alt='Picture didnt load' />
-                            <div>
-                                <h3>
-                                    {login}
-                                    <BorderColorIcon color='primary' />
-                                </h3>
-                                <p>
-                                    Frontend developer - работа в компании "ZeroLab".
-                                    <br />
-                                    <br />
-                                    Стек технологий:
-                                    <br />- JavaScript / TypeScript
-                                </p>
-                                <a href=''>Read more</a>
-                            </div>
-                        </Link>
-                    </div>
-                    <Link to='/new-post'>
-                        <Button fullWidth variant='contained' sx={{ mt: 3 }} color='primary'>
-                            Added new post
-                        </Button>
+        <div className={s.wrapper}>
+            {!token && (
+                <div className={s.lock} title='Нужно авторизоваться'>
+                    <Link to='/auth'>
+                        <LockIcon color='primary' />
                     </Link>
                 </div>
-            ) : null}
-        </>
+            )}
+            <div>
+                <Link to='/profile'>
+                    <img
+                        src={
+                            avatar
+                                ? `http://localhost:5000/${avatar}`
+                                : 'https://w7.pngwing.com/pngs/627/693/png-transparent-computer-icons-user-user-icon.png'
+                        }
+                        alt='Picture didnt load'
+                    />
+                    <div>
+                        <h3>
+                            {login ? login : 'Name '}
+                            <BorderColorIcon />
+                        </h3>
+                        <p>
+                            Frontend developer - работа в компании "ZeroLab".
+                            <br />
+                            <br />
+                            Стек технологий:
+                            <br />- JavaScript / TypeScript
+                        </p>
+                        <a href=''>Read more</a>
+                    </div>
+                </Link>
+            </div>
+            <Link to='/new-post'>
+                <Button fullWidth variant='contained' sx={{ mt: 3 }} color='primary'>
+                    Added new post
+                </Button>
+            </Link>
+        </div>
     );
 };
 

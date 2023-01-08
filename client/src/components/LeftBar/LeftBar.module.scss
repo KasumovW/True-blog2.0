@@ -4,6 +4,27 @@
     border-radius: 10px;
     background-color: #fff;
     padding: 25px 10px;
+    position: relative;
+
+    .lock {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 10px;
+        background-color: rgba($color: #000000, $alpha: 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 2;
+
+        svg {
+            width: 50px;
+            height: 50px;
+            fill: white;
+        }
+    }
 
     img {
         width: 100%;
@@ -23,7 +44,7 @@
         margin: 15px 0 20px 0;
 
         svg {
-            transition: .2s;
+            transition: 0.2s;
             opacity: 0;
             margin-left: 10px;
             cursor: pointer;
@@ -32,7 +53,7 @@
         &:hover {
             svg {
                 opacity: 1;
-                transition: .2s;
+                transition: 0.2s;
             }
         }
     }
