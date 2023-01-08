@@ -9,6 +9,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Blog } from '../../types/blog';
 import { useAppDispatch } from '../../hooks/redux';
 import { removeBlog } from '../../redux/slice/blogsSlice';
+import Cookies from 'js-cookie';
 
 type Props = {
     blog: Blog;
@@ -24,6 +25,8 @@ const index = ({ blog }: Props) => {
         console.log(blog._id);
     };
 
+    const userId = Cookies.get('userId');
+
     return (
         <div className={s.blog_wrapper}>
             <div className={s.blog_item}>
@@ -35,17 +38,21 @@ const index = ({ blog }: Props) => {
                             <p>20.12.2022</p>
                         </div>
                     </Link>
+                    { blog.user._id === userId &&
                     <div className={s.dropDown}>
                         <MoreHorizIcon className={s.edit} color='primary' />
                         <div className={s.dropDownContent}>
-                            <p>
-                                Изменить <EditIcon />
-                            </p>
+                            <Link to={`/post/edit/${blog._id}`}>
+                                <p>
+                                    Изменить <EditIcon />
+                                </p>
+                            </Link>
                             <p onClick={handleRemove}>
                                 Удалить <DeleteIcon />
                             </p>
                         </div>
                     </div>
+                    }
                 </div>
                 <h1 className={s.blog_title}>{blog.title}</h1>
                 <p className={s.blog_text}>{blog.text}</p>

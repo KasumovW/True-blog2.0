@@ -53,9 +53,9 @@ module.exports.postController = {
 
             const post = await Post.findById(id)
 
-            console.log(post.userID, req.user.id)
+            console.log(post.user._id, req.user.id)
 
-            if(post.userID.toString() !== req.user.id) {
+            if(post.user._id.toString() !== req.user.id) {
                 return res.status(400).json({error: "Это не твоя статья, руки прочь!"})
             }
 
@@ -65,7 +65,7 @@ module.exports.postController = {
 
             res.status(200).json({message: "Пост успешно удален"})
         } catch (e) {
-            res.json(e)
+            res.json({message: "Не удалось удалить пост", error: e})
         }
     },
 
@@ -75,7 +75,7 @@ module.exports.postController = {
 
             const post = await Post.findById(id)
 
-            if(post.userID.toString() !== req.user.id || req.user.role !== "admin") {
+            if(post.user._id.toString() !== req.user.id || req.user.role !== "admin") {
                 return res.json({error: "Это не твоя статья, руки прочь!"})
             }
 
@@ -83,7 +83,7 @@ module.exports.postController = {
 
             res.status(200).json({message: "Пост был успешно изменен"})
         } catch (e) {
-            res.json(e)
+            res.json({message: "Не удалось изменить пост", error: e})
         }
     }
 }

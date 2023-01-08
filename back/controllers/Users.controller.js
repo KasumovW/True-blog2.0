@@ -58,8 +58,9 @@ module.exports.userController = {
             }
 
             const token = generateAccessToken(user._id, user.login, user.role, user.avatar)
+            //const {login, role, posts, likes, comments, avatar} = user
 
-            res.json({token, login: user.login, role: user.role, posts: user.posts, likes: user.likes, comments: user.comments, avatar: user.avatar})
+            res.json({token,id: user._id, login: user.login, role: user.role, posts: user.posts, likes: user.likes, comments: user.comments, avatar: user.avatar})
         } catch (e) {
             res.json(e)
         }
@@ -80,7 +81,8 @@ module.exports.userController = {
             const { id } = req.params
             const user = await User.findById(id).populate("posts").exec()
 
-            res.json({login: user.login, role: user.role, posts: user.posts, likes: user.likes, avatar: user.avatar, createdAt: user.createdAt})
+            res.json({login: user.login, role: user.role, posts: user.posts, likes: user.likes, avatar: user.avatar, createdAt: user.createdAt
+            })
         } catch(e) {
             res.json(e)
         }

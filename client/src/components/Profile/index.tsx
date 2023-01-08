@@ -3,12 +3,19 @@ import s from "./Profile.module.scss"
 import BorderColorIcon from '@mui/icons-material/BorderColor'
 import Camera from '@mui/icons-material/CameraAlt'
 
-type Props = {
-    login: string,
-    avatar: string
+type User = {
+    user: {
+        login: string,
+        role: string,
+        avatar: string,
+        posts: string[],
+        likes: string[]
+    }
 }
 
-const Index = (props: Props) => {
+const Index = (props: User) => {
+
+    const {login, avatar, posts, likes} = props.user
     
     const [file, setFile] = useState<any>()
 
@@ -23,6 +30,8 @@ const Index = (props: Props) => {
         }
     }
 
+    console.log(props)
+
   return (
     <div className={s.user_info}>
         <input id='file' type="file" ref={inputFile} onChange={checkfile}/>
@@ -30,19 +39,19 @@ const Index = (props: Props) => {
             <label className={s.label} htmlFor="file">
                 <Camera />
             </label>
-            <img src={url + props.avatar} alt="" />
+            <img src={url + avatar} alt="" />
         </div>
         <div className={s.user_extra_info}>
             <div>
                 <h1 className={s.user_name}>
-                    {props.login} <BorderColorIcon className={s.pen} color='primary'/>
+                    {login} <BorderColorIcon className={s.pen} color='primary'/>
                 </h1>
                 <p className={s.created_at}>
                     Дата создания: <span>04.03.2023</span>
                 </p>
             </div>
             <p className={s.publications}>
-                100
+                {posts.length}
                 <span>публикации</span>
             </p>
         </div>
