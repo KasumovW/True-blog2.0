@@ -26,7 +26,8 @@ const Index = (props: User) => {
         file: undefined
     }),
         [isEditing, setIsEditing] = useState<boolean>(false),
-        [preview, setPreview] = useState<any>(null)
+        [preview, setPreview] = useState<any>(null),
+        [isChanged, setIsChanged] = useState<any>(false)
 
     const inputFile = useRef<any>(null),
         url = "http://localhost:5000/"
@@ -57,16 +58,9 @@ const Index = (props: User) => {
 
     const sendData = () => {
         dispatch(editUser(changeData))
+        setIsEditing(false)
+        setIsChanged(true)
     }
-
-    // useEffect(() => {
-        // create the preview
-        // const objectUrl = URL.createObjectURL(inputFile)
-        // setPreview(objectUrl)
-     
-        // free memory when ever this component is unmounted
-    //     return () => URL.revokeObjectURL(objectUrl)
-    //  }, [inputFile])
 
     return (
     <div className={s.user_info}>
@@ -75,14 +69,14 @@ const Index = (props: User) => {
             <label className={s.label} htmlFor="file">
                 <Camera />
             </label>
-            <img src={url + avatar} alt="" />
+            <img src={!isChanged ? url + avatar : !isEditing && preview ? preview : url + avatar} alt="" />
             {isEditing && <img className={s.preview_image} src={preview} alt="" />}
         </div>
         <div className={s.user_extra_info}>
             <div className={s.flex_container}>
                 <div>
                     <h1 className={s.user_name}>
-                        {!isEditing && login} 
+                        {!isChanged ? !isEditing && login : !isEditing && changeData.login} 
                         <Input type="text" className={isEditing ? `${s.user_name_input + " " + s.show}` : s.user_name_input} onChange={(e) => checkLogin(e)} value={changeData.login}/>
                         <BorderColorIcon className={s.pen} color='primary' onClick={edit}/>
                     </h1>
