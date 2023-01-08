@@ -97,7 +97,7 @@ export const editBlog = createAsyncThunk(
 
             formData.append('title', post.title);
             formData.append('text', post.text);
-            // formData.append('image', post.image);
+            formData.append('image', post.image);
 
             const response = await fetch(`http://localhost:5000/posts/${id}/`, {
                 method: 'PATCH',
@@ -138,7 +138,7 @@ export const blogSlice = createSlice({
                           ...elem,
                           title: action.payload.title,
                           text: action.payload.text,
-                          //   image: action.payload.image,
+                          image: 'asdf',
                       }
                     : elem
             );
