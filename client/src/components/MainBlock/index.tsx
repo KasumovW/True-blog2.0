@@ -1,7 +1,7 @@
 import { CircularProgress } from '@mui/material';
 import React, { memo } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { fetchBlogs } from '../../redux/slice/blogsSlice';
+import { defaultStatus, fetchBlogs } from '../../redux/slice/blogsSlice';
 import { Blog as IBlog } from '../../types/blog';
 import Blog from '../Blog';
 import { ToastContainer, toast } from 'react-toastify';
@@ -13,12 +13,17 @@ type Props = {};
 
 const index = (props: Props) => {
     const dispatch = useAppDispatch();
+    const { blogs, status, error } = useAppSelector((state) => state.blogs);
 
     React.useEffect(() => {
         dispatch(fetchBlogs());
     }, [dispatch]);
 
-    const { blogs, status, error } = useAppSelector((state) => state.blogs);
+    React.useEffect(() => {
+        if (status === 'succeeded') {
+            dispatch(defaultStatus());
+        }
+    }, [status]);
 
     if (status === 'pending') {
         <div className={s.loader}>
@@ -26,14 +31,14 @@ const index = (props: Props) => {
         </div>;
     }
 
-    if (error) {
-        <h1>{error}</h1>;
-    }
-
     if (status === 'succeeded') {
-        toast('Заполните все поля', {
+        toast('Пост успешно удален', {
             type: 'success',
         });
+    }
+
+    if (error) {
+        <h1>{error}</h1>;
     }
 
     return (
