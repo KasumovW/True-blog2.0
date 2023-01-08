@@ -6,7 +6,7 @@ import { CircularProgress } from '@mui/material'
 import Camera from '@mui/icons-material/CameraAlt'
 import Cookies from 'js-cookie'
 import { useAppDispatch, useAppSelector } from '../../hooks/redux'
-import { getUserByID } from '../../redux/slice/userSlice'
+import { getUserByID, removeUserId } from '../../redux/slice/userSlice'
 import UserInfo from "../../components/Profile"
 
 type Props = {}
@@ -14,6 +14,7 @@ type Props = {}
 interface userInfo {
     login: string,
     role: string,
+    avatar: string,
     posts: string[],
     likes: string[]
 }
@@ -40,12 +41,16 @@ const OtherUser = (props: Props) => {
         if(userID) {
             dispatch(getUserByID(userID))
         }
+
+        return () => {
+             dispatch(removeUserId())
+        }
     }, [])
 
   return (
     <div className={s.main}>
         {userInfo ? 
-        <UserInfo login={userInfo.login} avatar={userInfo.avatar}/> :
+        <UserInfo user={userInfo}/> :
         <div className={s.user_info}><CircularProgress style={{margin: "auto"}} /></div>
         }
     </div>

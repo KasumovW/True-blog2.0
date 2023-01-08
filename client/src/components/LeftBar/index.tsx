@@ -19,6 +19,7 @@ const index = (props: Props) => {
         {token ? 
         <div className={s.wrapper}>
             <div>
+                <Link to="/profile">
                 <img src={`http://localhost:5000${avatar}`} alt='Picture didnt load' />
                 <div>
                     <h3>
@@ -34,6 +35,7 @@ const index = (props: Props) => {
                     </p>
                     <a href=''>Read more</a>
                 </div>
+                </Link>
             </div>
             <Link to='/new-post'>
                 <Button fullWidth variant='contained' sx={{ mt: 3 }} color='primary'>

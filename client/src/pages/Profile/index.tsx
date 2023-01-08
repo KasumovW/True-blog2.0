@@ -13,6 +13,7 @@ type Props = {}
 interface userInfo {
     login: string,
     role: string,
+    avatar: string,
     posts: string[],
     likes: string[]
 }
@@ -35,18 +36,21 @@ const Index = (props: Props) => {
 
     const login: any = Cookies.get('login'),
         avatar: any = Cookies.get('avatar'),
-        url = "http://localhost:5000",
-        {userID} = useParams()
+        posts: any =Cookies.get('posts'),
+        likes: any = Cookies.get('likes'),
+        role: any = Cookies.get('role'),
+        url = "http://localhost:5000"
 
-    useEffect(() => {
-        if(userID) {
-            dispatch(getUserByID(userID))
-        }
-    }, [])
+    const postsArr: string[] = Array.from(posts.split(','))
+    const likesArr: string[] = Array.from(likes.split(','))
+
+    const user = {
+        login, avatar, posts: postsArr, likes: likesArr, role
+    }
 
   return (
     <div className={s.main}>
-        <UserInfo login={login} avatar={avatar} />
+        <UserInfo user={user} />
     </div>
   )
 }

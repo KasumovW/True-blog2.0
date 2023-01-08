@@ -96,9 +96,11 @@ export const userSlice = createSlice({
         changeToken: (_, action) => {
             console.log(action.payload);
 
-            const { login, avatar, posts, likes } = action.payload;
+            const { id, login, avatar, posts, likes, role } = action.payload;
 
+            Cookies.set('userId', id);
             Cookies.set('login', login);
+            Cookies.set('role', role);
             Cookies.set('avatar', avatar);
             Cookies.set('posts', posts);
             Cookies.set('likes', likes);
@@ -108,6 +110,9 @@ export const userSlice = createSlice({
             state.token = null;
             Cookies.remove('token');
         },
+        removeUserId: state => {
+            state.watchingUser = undefined
+        }
     },
     extraReducers: {
         //@ts-ignore
@@ -152,4 +157,4 @@ export const userSlice = createSlice({
     },
 });
 
-export const { changeToken, logout } = userSlice.actions;
+export const { changeToken, logout, removeUserId } = userSlice.actions;
