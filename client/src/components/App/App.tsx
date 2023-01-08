@@ -7,6 +7,7 @@ import Profile from "../../pages/Profile";
 import OtherUser from '../../pages/Profile/OtherUser';
 import NewPost from '../../pages/NewPost';
 import ErrorPage from '../ErrorPage';
+import { ToastContainer } from 'react-toastify';
 
 const App: React.FC = () => {
     const router = createBrowserRouter([
@@ -36,6 +37,7 @@ const App: React.FC = () => {
     return (
         <div className='App'>
             <RouterProvider router={router} />
+            <ToastContainer />
         </div>
     );
 };

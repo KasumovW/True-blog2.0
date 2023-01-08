@@ -1,6 +1,6 @@
 import { Box, Typography, TextField, FormControlLabel, Checkbox, Button, Grid } from '@mui/material';
-import { Link } from 'react-router-dom';
-import { useAppDispatch } from '../../hooks/redux';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { authorization } from '../../redux/slice/userSlice';
 import { UserData } from '../../types/user';
 
@@ -13,6 +13,7 @@ type Props = {
 
 const Index = ({ changeData, data }: Props) => {
     const dispatch = useAppDispatch();
+
     const handleAuth = (e: React.MouseEvent) => {
         e.preventDefault();
         dispatch(authorization(data));

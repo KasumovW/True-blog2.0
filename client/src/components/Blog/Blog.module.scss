@@ -37,12 +37,56 @@
             }
         }
 
-        .edit {
-            position: absolute;
-            right: 10px;
-            top: 15px;
-            cursor: pointer;
-            font-size: 32px;
+        .dropDown {
+            .dropDownContent {
+                display: none;
+                position: absolute;
+                right: -40px;
+                top: 40px;
+                width: 120px;
+                z-index: 2;
+                border: 1px solid lightblue;
+                border-radius: 5px;
+                background: white;
+
+                p {
+                    font-size: 16px;
+                    color: #000000;
+                    font-weight: 500;
+                    line-height: 20px;
+                    cursor: pointer;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 5px;
+                    height: 35px;
+
+                    &:hover {
+                        background: rgba($color: #1976d2, $alpha: 0.1);
+                    }
+                }
+
+                p + p {
+                    font-size: 16px;
+                    color: #000000;
+                    font-weight: 500;
+                    line-height: 20px;
+                }
+            }
+
+            .edit {
+                position: absolute;
+                right: 10px;
+                top: 15px;
+                cursor: pointer;
+                font-size: 32px;
+            }
+
+            &:hover {
+                .dropDownContent {
+                    display: block;
+                }
+            }
         }
     }
 
@@ -61,7 +105,7 @@
         .blog_title {
             font-size: 26px;
         }
-    
+
         .blog_text {
             font-size: 20px;
         }
