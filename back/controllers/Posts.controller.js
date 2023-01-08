@@ -30,7 +30,7 @@ module.exports.postController = {
 
             console.log(req.query)
 
-            res.status(200).json(posts)
+            res.status(200).json(posts.reverse())
         } catch (e) {
             res.json(e)
         }
@@ -79,7 +79,7 @@ module.exports.postController = {
                 return res.json({error: "Это не твоя статья, руки прочь!"})
             }
 
-            await Post.findByIdAndUpdate(id, {$set: {title: req.body.title, text: req.body.text, image: req.file.path}})
+            await Post.findByIdAndUpdate(id, {$set: {title: req.body.title, text: req.body.text, image: req.file && req.file.path}})
 
             res.status(200).json({message: "Пост был успешно изменен"})
         } catch (e) {
