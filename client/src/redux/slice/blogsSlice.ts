@@ -104,8 +104,8 @@ export const editBlog = createAsyncThunk(
                 //@ts-ignore
                 headers: {
                     authorization: `Bearer ${Cookies.get('token')}`,
-                    body: formData,
                 },
+                body: formData,
             });
 
             if (!response.ok) {

@@ -53,8 +53,6 @@ module.exports.postController = {
 
             const post = await Post.findById(id)
 
-            console.log(post.user._id, req.user.id)
-
             if(post.user._id.toString() !== req.user.id) {
                 return res.status(400).json({error: "Это не твоя статья, руки прочь!"})
             }
@@ -75,11 +73,15 @@ module.exports.postController = {
 
             const post = await Post.findById(id)
 
-            if(post.user._id.toString() !== req.user.id || req.user.role !== "admin") {
+            console.log(post.user._id.toString() === req.user.id.toString())
+
+            if(post.user._id.toString() !== req.user.id.toString()) {
                 return res.json({error: "Это не твоя статья, руки прочь!"})
             }
 
-            await Post.findByIdAndUpdate(id, {$set: {title: req.body.title, text: req.body.text, image: req.file && req.file.path}})
+            const {title, text} = req.body
+
+            await Post.findByIdAndUpdate(id, {$set: {title: title !== "" && title, text: text !== "" && text, image: req.file && req.file.path}})
 
             res.status(200).json({message: "Пост был успешно изменен"})
         } catch (e) {
