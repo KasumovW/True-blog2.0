@@ -55,7 +55,7 @@ export const addBlog = createAsyncThunk('blogs/add', async (data: Post, { reject
         }
 
         const newData = await response.json();
-        dispatch(getPosts(newData));
+        console.log(newData);
     } catch (error: any) {
         return rejectWithValue(error.message);
     }
@@ -138,13 +138,17 @@ export const blogSlice = createSlice({
                           ...elem,
                           title: action.payload.title,
                           text: action.payload.text,
-                          image: 'asdf',
+                          image: action.payload.image,
                       }
                     : elem
             );
         },
+        defaultStatus: (state) => {
+            state.status = null;
+        },
     },
     extraReducers: (builder) => {
+        //Получение
         builder.addCase(fetchBlogs.pending, (state: any) => {
             state.status = 'pending';
             state.error = null;
@@ -158,6 +162,7 @@ export const blogSlice = createSlice({
             state.error = action.payload;
         });
 
+        //Добавление
         builder.addCase(addBlog.pending, (state: any) => {
             state.status = 'pending';
             state.error = null;
@@ -171,6 +176,7 @@ export const blogSlice = createSlice({
             state.error = action.payload;
         });
 
+        //Удаление
         builder.addCase(removeBlog.pending, (state: any) => {
             state.status = 'pending';
             state.error = null;
@@ -183,7 +189,21 @@ export const blogSlice = createSlice({
             state.status = 'failed';
             state.error = action.payload;
         });
+
+        //Изменение
+        builder.addCase(editBlog.pending, (state: any) => {
+            state.status = 'pending';
+            state.error = null;
+        });
+        builder.addCase(editBlog.fulfilled, (state: any) => {
+            state.status = 'succeeded';
+            state.error = null;
+        });
+        builder.addCase(editBlog.rejected, (state: any, action) => {
+            state.status = 'failed';
+            state.error = action.payload;
+        });
     },
 });
 
-export const { getPosts, deletePost, changePost } = blogSlice.actions;
+export const { getPosts, deletePost, changePost, defaultStatus } = blogSlice.actions;

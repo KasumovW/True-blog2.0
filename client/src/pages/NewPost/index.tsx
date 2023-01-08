@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { TextField, Button } from '@mui/material';
-import { addBlog, editBlog } from '../../redux/slice/blogsSlice';
+import { addBlog, defaultStatus, editBlog } from '../../redux/slice/blogsSlice';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useAppDispatch } from '../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import s from './NewPost.module.scss';
 import { useParams } from 'react-router-dom';
 
@@ -15,11 +15,12 @@ export interface Post {
     title: string;
     text: string;
     image: null | any;
+    _id?: string | number;
 }
 
 const index = ({ state }: Props) => {
     const { id } = useParams();
-    console.log(id);
+    const { status } = useAppSelector((state) => state.blogs);
 
     const [post, setPost] = React.useState<Post>({ title: '', text: '', image: null });
 
@@ -34,24 +35,44 @@ const index = ({ state }: Props) => {
     const dispatch = useAppDispatch();
 
     const handlePost = () => {
-        if (!post.title || !post.text) {
-            if(state !== 'edit') {
+        if (state === 'add') {
+            if (!post.title || !post.text) {
                 toast('Заполните все поля', {
                     type: 'warning',
                 });
+            } else {
+                dispatch(addBlog(post));
             }
-        } else {
-            state === 'edit' ? dispatch(editBlog({ post, id })) : dispatch(addBlog(post));
+        }
+
+        if (state === 'edit') {
+            dispatch(editBlog({ post, id }));
         }
     };
 
-    console.log(post);
+    console.log(status);
+
+    useEffect(() => {
+        if (state === 'edit') {
+            status === 'succeeded' && toast('Пост успешно изменен', { type: 'success' });
+        }
+
+        if (state === 'add') {
+            status === 'succeeded' && toast('Пост успешно добавлен', { type: 'success' });
+        }
+    }, [status]);
+
+    React.useEffect(() => {
+        if (status === 'succeeded') {
+            dispatch(defaultStatus());
+        }
+    }, [status]);
 
     return (
         <div className={s.wrapper}>
-            <h1>Добавление нового поста</h1>
+            <h1>{state === 'add' ? 'Добавление нового поста' : 'Изменение поста'}</h1>
             <form>
-                <h3>Заголовок нового поста</h3>
+                <h3>Заголовок поста</h3>
                 <TextField
                     margin='normal'
                     required
@@ -64,13 +85,13 @@ const index = ({ state }: Props) => {
                     value={post.title}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => changePost(e, 'title')}
                 />
-                <h3>Описание нового поста</h3>
+                <h3>Описание поста</h3>
                 <TextField
                     margin='normal'
                     required
                     fullWidth
                     id='text'
-                    label='Введите описание нового поста...'
+                    label='Введите описание поста...'
                     name='text'
                     autoComplete='text'
                     autoFocus
@@ -97,7 +118,7 @@ const index = ({ state }: Props) => {
             </label>
             <div className={s.addButtonCover}>
                 <Button className={s.addButton} variant='contained' onClick={handlePost}>
-                    Добавить пост
+                    {state === 'add' ? 'Добавить пост' : 'Изменить пост'}
                 </Button>
             </div>
         </div>
