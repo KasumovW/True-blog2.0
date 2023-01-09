@@ -15,7 +15,7 @@ export interface Post {
     title: string;
     text: string;
     image: null | any;
-    _id?: string | number;
+    id?: string | number;
 }
 
 const index = ({ state }: Props) => {
