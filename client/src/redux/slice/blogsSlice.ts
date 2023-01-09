@@ -1,19 +1,26 @@
 import { authorization } from './userSlice';
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
 import { Blog } from '../../types/blog';
 import { Post } from '../../pages/NewPost';
+import { RootState } from '../store';
 
 type ChangePost = {
     post: Post;
     id: string | undefined;
 };
 
-const initialState = {
+
+interface BlogsSliceState {
+    blogs: Blog[] | [];
+    watchingBlog: Blog | null;
+    status: 'pending' | 'succeeded' | 'failed' | null;
+    error: null | string;
+}
+
+const initialState: BlogsSliceState = {
     blogs: [],
     watchingBlog: null,
-
-    //'pending' | 'succeeded' | 'failed' | null
     status: null,
     error: null,
 };
@@ -148,13 +155,13 @@ export const blogSlice = createSlice({
     name: 'blog',
     initialState,
     reducers: {
-        getPosts: (state, action) => {
+        getPosts: (state, action: PayloadAction<Blog[]>) => {
             state.blogs = action.payload;
         },
-        deletePost: (state, action) => {
+        deletePost: (state, action: PayloadAction<string>) => {
             state.blogs = state.blogs.filter((element: Blog) => element._id !== action.payload);
         },
-        changePost: (state, action) => {
+        changePost: (state, action: PayloadAction<Post>) => {
             state.blogs.map((elem: Blog) =>
                 elem._id === action.payload.id
                     ? {
@@ -169,6 +176,7 @@ export const blogSlice = createSlice({
         defaultStatus: (state) => {
             state.status = null;
         },
+        
         removeWatchingBlog: (state) => {
             state.watchingBlog = null;
         }

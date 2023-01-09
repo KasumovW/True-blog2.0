@@ -11,9 +11,10 @@ import LockIcon from '@mui/icons-material/Lock';
 type Props = {};
 
 const index = (props: Props) => {
-    const token = Cookies.get('token');
-    const login = Cookies.get('login');
-    const avatar: any = Cookies.get('avatar');
+    const token = Cookies.get('token'),
+        id = Cookies.get('userId'),
+        login = Cookies.get('login'),
+        avatar: any = Cookies.get('avatar');
 
     return (
         <div className={s.wrapper}>
@@ -25,7 +26,7 @@ const index = (props: Props) => {
                 </div>
             )}
             <div>
-                <Link to='/profile'>
+                <Link to={`/profile/${id}`}>
                     <img
                         src={
                             avatar
