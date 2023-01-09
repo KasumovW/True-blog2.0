@@ -95,8 +95,12 @@ export const editBlog = createAsyncThunk(
 
             const formData = new FormData();
 
-            formData.append('title', post.title);
-            formData.append('text', post.text);
+            if(post.title) {
+                formData.append('title', post.title);
+            }
+            if (post.text) {
+                formData.append('text', post.text);
+            }
             formData.append('image', post.image);
 
             const response = await fetch(`http://localhost:5000/posts/${id}/`, {
