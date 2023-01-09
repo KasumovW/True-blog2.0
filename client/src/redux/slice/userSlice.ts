@@ -1,14 +1,32 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { UserData } from '../../types/user';
 import Cookies from 'js-cookie';
+import { Blog } from '../../types/blog';
 
-const initialState = {
+interface UserAction {
+    id: string;
+    login: string;
+    avatar: string;
+    posts: string;
+    likes: string;
+    role: string;
+    token: string;
+}
+interface UserSliceState {
+    login: string;
+    password: string;
+    token: string | null;
+    watchingUser: undefined | any;
+
+    status: 'pending' | 'succeeded' | 'failed' | null;
+    error: null | string;
+}
+
+const initialState: UserSliceState = {
     login: '',
     password: '',
     token: Cookies.get('token') || null,
     watchingUser: undefined,
-
-    //'pending' | 'succeeded' | 'failed' | null
     status: null,
     error: null,
 };
@@ -84,32 +102,35 @@ export const getUserByID = createAsyncThunk('user/getUser', async (userID: strin
     }
 });
 
-export const editUser = createAsyncThunk('user/editUser', async (data: {login: string, file: File | any}, { rejectWithValue }) => {
-    try {
-        const userID = Cookies.get("userId")
+export const editUser = createAsyncThunk(
+    'user/editUser',
+    async (data: { login: string; file: File | any }, { rejectWithValue }) => {
+        try {
+            const userID = Cookies.get('userId');
 
-        const formData = new FormData();
-        formData.append("login", data.login)
-        formData.append("avatar", data.file)
+            const formData = new FormData();
+            formData.append('login', data.login);
+            formData.append('avatar', data.file);
 
-        const response = await fetch(`http://localhost:5000/users/${userID}`, {
-            method: 'PATCH',
-            headers: {
-                Authorization: `Bearer ${Cookies.get("token")}`
-            },
-            body: formData
-        });
+            const response = await fetch(`http://localhost:5000/users/${userID}`, {
+                method: 'PATCH',
+                headers: {
+                    Authorization: `Bearer ${Cookies.get('token')}`,
+                },
+                body: formData,
+            });
 
-        if (!response.ok) {
-            throw new Error('Вы не смогли зарегистрироваться, ошибка сервера!');
+            if (!response.ok) {
+                throw new Error('Вы не смогли зарегистрироваться, ошибка сервера!');
+            }
+
+            return await response.json();
+            // console.log(newData);
+        } catch (error: any) {
+            return rejectWithValue(error.message);
         }
-
-        return await response.json();
-        // console.log(newData);
-    } catch (error: any) {
-        return rejectWithValue(error.message);
     }
-});
+);
 
 const setError = (state: { status: string; error: Error }, action: { payload: any }) => {
     state.status = 'failed';
@@ -120,10 +141,10 @@ export const userSlice = createSlice({
     name: 'user',
     initialState,
     reducers: {
-        changeToken: (_, action) => {
+        changeToken: (_, action: PayloadAction<UserAction>) => {
             console.log(action.payload);
 
-            const { id, login, avatar, posts, likes, role } = action.payload;
+            const { id, login, avatar, posts, likes, role, token } = action.payload;
 
             Cookies.set('userId', id);
             Cookies.set('login', login);
@@ -131,15 +152,15 @@ export const userSlice = createSlice({
             Cookies.set('avatar', avatar);
             Cookies.set('posts', posts);
             Cookies.set('likes', likes);
-            Cookies.set('token', action.payload.token);
+            Cookies.set('token', token);
         },
         logout: (state) => {
-            state.token = null;
             Cookies.remove('token');
+            state.token = null;
         },
-        removeUserId: state => {
-            state.watchingUser = undefined
-        }
+        removeUserId: (state) => {
+            state.watchingUser = undefined;
+        },
     },
     extraReducers: {
         //@ts-ignore
@@ -190,11 +211,11 @@ export const userSlice = createSlice({
         [editUser.fulfilled]: (state: any, action: any) => {
             state.status = 'succeeded';
             state.error = null;
-            Cookies.remove("login", action.payload.login)
-            Cookies.remove("avatar", action.payload.avatar)
-            Cookies.set("login", action.payload.login)
-            Cookies.set("avatar", action.payload.avatar)
-            console.log(action.payload)
+            Cookies.remove('login', action.payload.login);
+            Cookies.remove('avatar', action.payload.avatar);
+            Cookies.set('login', action.payload.login);
+            Cookies.set('avatar', action.payload.avatar);
+            console.log(action.payload);
         },
         //@ts-ignore
         [editUser.rejected]: setError,
