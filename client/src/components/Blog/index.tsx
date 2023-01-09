@@ -57,7 +57,9 @@ const index = ({ blog }: Props) => {
                         </div>
                     )}
                 </div>
-                <h1 className={s.blog_title}>{blog.title}</h1>
+                <Link to={`/post/${blog._id}`}>
+                    <h1 className={s.blog_title}>{blog.title}</h1>
+                </Link>
                 <p className={s.blog_text}>{blog.text}</p>
                 {blog.image && (
                     <img src={`http://localhost:5000/${blog.image}`} alt='Картинка не прогрузилась' />

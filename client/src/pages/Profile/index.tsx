@@ -20,43 +20,24 @@ interface userInfo {
 
 const Index = (props: Props) => {
 
-  let user = {}
+  let user;
 
-  const {userID} = useParams()
+  const { userID } = useParams()
 
   if(userID) {
-      const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch()
 
-      useEffect(() => {
-        if(userID) {
-            dispatch(getUserByID(userID))
-        }
+    useEffect(() => {
+      if(userID) {
+          dispatch(getUserByID(userID))
+      }
+      return () => {
+          dispatch(removeUserId())
+      }
+    }, [])
 
-        return () => {
-             dispatch(removeUserId())
-        }
-      }, [])
-
-      const userInfo: userInfo | any = useAppSelector((state) => state.user.watchingUser)
-  
-      const {userID} = useParams()
-
-      user = userInfo
-  } else {
-    const login: any = Cookies.get('login'),
-      // id: any = Cookies.get('userId'),
-      avatar: any = Cookies.get('avatar'),
-      posts: any =Cookies.get('posts'),
-      likes: any = Cookies.get('likes'),
-      role: any = Cookies.get('role'),
-      url = "http://localhost:5000/"
-
-    const postsArr: string[] = Array.from(posts.split(','))
-    const likesArr: string[] = Array.from(likes.split(','))
-
-    user = {
-      login, avatar: url + avatar, id: userID, posts: postsArr, likes: likesArr, role
-    }
+    const userInfo: userInfo | any = useAppSelector((state) => state.user.watchingUser)
+    user = userInfo
   }
 
   return (

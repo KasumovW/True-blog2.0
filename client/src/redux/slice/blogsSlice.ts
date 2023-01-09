@@ -10,15 +10,17 @@ type ChangePost = {
     id: string | undefined;
 };
 
+
 interface BlogsSliceState {
     blogs: Blog[] | [];
-
+    watchingBlog: Blog | null;
     status: 'pending' | 'succeeded' | 'failed' | null;
     error: null | string;
 }
 
 const initialState: BlogsSliceState = {
     blogs: [],
+    watchingBlog: null,
     status: null,
     error: null,
 };
@@ -37,6 +39,24 @@ export const fetchBlogs = createAsyncThunk('blogs/fetch', async (_, { rejectWith
         return rejectWithValue(error.message);
     }
 });
+
+export const getPostById = createAsyncThunk('blogs/getOne', async (postID: string | undefined, { rejectWithValue, dispatch }) => {
+    try {
+        if(!postID) {
+            return "ID не найден"
+        }
+        const response = await fetch(`http://localhost:5000/posts/${postID}`);
+
+        if (!response.ok) {
+            throw new Error('Посты с сервера не получены, проблета ответа сервера!');
+        }
+
+        return await response.json();
+    } catch (error: any) {
+        return rejectWithValue(error.message);
+    }
+});
+
 
 export const addBlog = createAsyncThunk('blogs/add', async (data: Post, { rejectWithValue, dispatch }) => {
     console.log(data);
@@ -73,7 +93,7 @@ export const removeBlog = createAsyncThunk(
         try {
             console.log(id);
 
-            const response = await fetch(`http://localhost:5000/posts/${id}/`, {
+            const response = await fetch(`http://localhost:5000/posts/${id}`, {
                 method: 'DELETE',
                 headers: {
                     Authorization: `Bearer ${Cookies.get('token')}`,
@@ -156,6 +176,10 @@ export const blogSlice = createSlice({
         defaultStatus: (state) => {
             state.status = null;
         },
+        
+        removeWatchingBlog: (state) => {
+            state.watchingBlog = null;
+        }
     },
     extraReducers: (builder) => {
         //Получение
@@ -168,6 +192,21 @@ export const blogSlice = createSlice({
             state.error = null;
         });
         builder.addCase(fetchBlogs.rejected, (state: any, action) => {
+            state.status = 'failed';
+            state.error = action.payload;
+        });
+
+        //Получение одного поста
+        builder.addCase(getPostById.pending, (state: any) => {
+            state.status = 'pending';
+            state.error = null;
+        });
+        builder.addCase(getPostById.fulfilled, (state: any, action) => {
+            state.status = null;
+            state.watchingBlog = action.payload;
+            state.error = null;
+        });
+        builder.addCase(getPostById.rejected, (state: any, action) => {
             state.status = 'failed';
             state.error = action.payload;
         });
@@ -216,4 +255,4 @@ export const blogSlice = createSlice({
     },
 });
 
-export const { getPosts, deletePost, changePost, defaultStatus } = blogSlice.actions;
+export const { getPosts, deletePost, changePost, defaultStatus, removeWatchingBlog } = blogSlice.actions;

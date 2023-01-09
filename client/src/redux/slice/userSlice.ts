@@ -213,11 +213,10 @@ export const userSlice = createSlice({
         [editUser.fulfilled]: (state: any, action: any) => {
             state.status = 'succeeded';
             state.error = null;
-            Cookies.remove('login', action.payload.login);
-            Cookies.remove('avatar', action.payload.avatar);
-            Cookies.set('login', action.payload.login);
-            Cookies.set('avatar', action.payload.avatar);
-            console.log(action.payload);
+            Cookies.remove("login", action.payload.login)
+            Cookies.remove("avatar", action.payload.avatar)
+            Cookies.set("login", action.payload.login)
+            Cookies.set("avatar", action.payload.avatar)
         },
         //@ts-ignore
         [editUser.rejected]: setError,

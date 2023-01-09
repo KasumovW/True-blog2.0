@@ -7,6 +7,10 @@
 .blog_item {
     padding: 15px 20px;
 
+    .blog_title {
+        cursor: pointer;
+    }
+
     .blog_header {
         display: flex;
         position: relative;

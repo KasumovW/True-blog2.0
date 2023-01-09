@@ -45,7 +45,7 @@ module.exports.userController = {
 
             const { login, password } = req.body
 
-            const user = await User.findOne({login})
+            const user = await User.findOne({login}).populate("posts").exec()
 
             if(!user) {
                 return res.status(400).json("Пользователь с таким логином не найден")
