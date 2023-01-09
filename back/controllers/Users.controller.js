@@ -81,7 +81,7 @@ module.exports.userController = {
             const { id } = req.params
             const user = await User.findById(id).populate("posts").exec()
 
-            res.json({login: user.login, role: user.role, posts: user.posts, likes: user.likes, avatar: user.avatar, createdAt: user.createdAt
+            res.json({id: user._id, login: user.login, role: user.role, posts: user.posts, likes: user.likes, avatar: user.avatar, createdAt: user.createdAt
             })
         } catch(e) {
             res.status(400).json({message: "Не удалось получить пользователя", error: e})

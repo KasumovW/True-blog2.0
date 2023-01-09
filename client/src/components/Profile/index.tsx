@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import s from "./Profile.module.scss"
 import BorderColorIcon from '@mui/icons-material/BorderColor'
 import Camera from '@mui/icons-material/CameraAlt'
-import { Button, Input } from '@mui/material'
+import { Button, CircularProgress, Input } from '@mui/material'
 import { editUser } from '../../redux/slice/userSlice'
 import { useAppDispatch } from '../../hooks/redux'
 import Cookies from 'js-cookie'
@@ -18,7 +18,7 @@ type User = {
     }
 }
 
-const Index = (props: User) => {
+const Index = (props: User | any) => {
 
     const {posts, likes, id} = props.user
     const dispatch = useAppDispatch()
@@ -72,43 +72,46 @@ const Index = (props: User) => {
 
     const userId = Cookies.get("userId")
 
-    return (
-    <div className={s.user_info}>
-        <input id='file' type="file" className={s.user_file_input} ref={inputFile} onChange={checkfile}/>
-        <div className={s.avatar}>
-            {id === userId && 
-            <label className={s.label} htmlFor="file">
-                <Camera />
-            </label>
-            }
-            <img src={avatar} alt="" />
-            {isEditing && <img className={s.preview_image} src={preview} alt="" />}
-        </div>
-        <div className={s.user_extra_info}>
-            <div className={s.flex_container}>
-                <div>
-                    <h1 className={s.user_name}>
-                        {!isEditing && login} 
-                        <Input type="text" className={isEditing ? `${s.user_name_input + " " + s.show}` : s.user_name_input} onChange={(e) => checkLogin(e)} value={changeData.login}/>
-                        {id === userId && <BorderColorIcon className={s.pen} color='primary' onClick={edit}/>}
-                    </h1>
-                    <p className={s.created_at}>
-                        Дата создания: <span>04.03.2023</span>
+    console.log(id, userId)
+    
+    return ( 
+        <div className={s.user_info}>
+            <input id='file' type="file" className={s.user_file_input} ref={inputFile} onChange={checkfile}/>
+            <div className={s.avatar}>
+                {id === userId && 
+                <label className={s.label} htmlFor="file">
+                    <Camera />
+                </label>
+                }
+                <img src={avatar} alt="" />
+                {isEditing && <img className={s.preview_image} src={preview} alt="" />}
+            </div>
+            <div className={s.user_extra_info}>
+                <div className={s.flex_container}>
+                    <div>
+                        <h1 className={s.user_name}>
+                            {!isEditing && login} 
+                            <Input type="text" className={isEditing ? `${s.user_name_input + " " + s.show}` : s.user_name_input} onChange={(e) => checkLogin(e)} value={changeData.login}/>
+                            {id === userId && <BorderColorIcon className={s.pen} color='primary' onClick={edit}/>}
+                        </h1>
+                        <p className={s.created_at}>
+                            Дата создания: <span>04.03.2023</span>
+                        </p>
+                    </div>
+                    <p className={s.publications}>
+                        {posts.length}
+                        <span>публикации</span>
                     </p>
                 </div>
-                <p className={s.publications}>
-                    {posts.length}
-                    <span>публикации</span>
-                </p>
+                {isEditing &&
+                <div className={s.button_wrapper}>
+                    <Button onClick={sendData} className={s.submit_button} variant='contained'>Подтвердить</Button>
+                </div>
+                }
             </div>
-            {isEditing &&
-            <div className={s.button_wrapper}>
-                <Button onClick={sendData} className={s.submit_button} variant='contained'>Подтвердить</Button>
-            </div>
-            }
         </div>
-    </div>
-  )
+    )
+
 }
 
 export default Index
