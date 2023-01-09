@@ -36,7 +36,7 @@ module.exports.userController = {
             const user = await User.create({login, password: hashedPassword, role})
             res.status(200).json(user)
         } catch (e) {
-            res.json(e)
+            res.status(400).json({message: "Не удалось зарегистрироваться", error: e})
         }
     },
 
@@ -62,7 +62,7 @@ module.exports.userController = {
 
             res.json({token, id: user._id, login: user.login, role: user.role, posts: user.posts, likes: user.likes, comments: user.comments, avatar: user.avatar})
         } catch (e) {
-            res.json(e)
+            res.status(400).json({message: "Не удалось получить войти в систему", error: e})
         }
     },
 
@@ -72,7 +72,7 @@ module.exports.userController = {
 
             res.json(users)
         } catch (e) {
-            res.json(e)
+            res.status(400).json({message: "Не удалось получить пользователей", error: e})
         }
     },
 
@@ -81,10 +81,10 @@ module.exports.userController = {
             const { id } = req.params
             const user = await User.findById(id).populate("posts").exec()
 
-            res.json({login: user.login, role: user.role, posts: user.posts, likes: user.likes, avatar: user.avatar, createdAt: user.createdAt
+            res.json({id: user._id, login: user.login, role: user.role, posts: user.posts, likes: user.likes, avatar: user.avatar, createdAt: user.createdAt
             })
         } catch(e) {
-            res.json(e)
+            res.status(400).json({message: "Не удалось получить пользователя", error: e})
         }
     },
     
@@ -94,10 +94,10 @@ module.exports.userController = {
 
             await User.findByIdAndRemove(req.params.id)
 
-            res.json("User was deleted")
+            res.json("Пользователь был успешно удален")
         }
         catch (e) {
-            res.json(e)
+            res.status(400).json({message: "Не удалось удалить пользователя", error: e})
         }
     },
 
@@ -120,7 +120,7 @@ module.exports.userController = {
             res.json(editedUser)
         }
         catch (e) {
-            res.json("Не удалось изменить фото профиля")
+            res.status(400).json({message: "Не удалось изменить фото профиля", error: e})
         }
     },
 
@@ -141,7 +141,7 @@ module.exports.userController = {
             res.status(200).json({message: "Комментарий успешно добавлен"})
         }
         catch (e) {
-            res.status(400).json({message: "Не удалось добавить комментарий"})
+            res.status(400).json({message: "Не удалось добавить комментарий", error: e})
         }
     },
 
@@ -159,7 +159,7 @@ module.exports.userController = {
             res.status(200).json({message: "Добавлено в понравившиеся"})
         }
         catch (e) {
-            res.status(400).json({message: "Не удалось лайкнуть пост"})
+            res.status(400).json({message: "Не удалось лайкнуть пост", error: e})
         }
     }
 }

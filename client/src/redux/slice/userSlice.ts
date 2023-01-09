@@ -197,6 +197,8 @@ export const userSlice = createSlice({
         //@ts-ignore
         [getUserByID.fulfilled]: (state: any, action: any) => {
             state.status = 'succeeded';
+            action.payload.avatar = "http://localhost:5000/" + action.payload.avatar
+            console.log(action.payload)
             state.watchingUser = action.payload;
             state.error = null;
         },

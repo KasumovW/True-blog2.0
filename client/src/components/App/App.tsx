@@ -4,7 +4,6 @@ import Layout from '../../layouts/layout';
 import Auth from '../../pages/Auth';
 import Main from '../../pages/Main';
 import Profile from '../../pages/Profile';
-import OtherUser from '../../pages/Profile/OtherUser';
 import NewPost from '../../pages/NewPost';
 import ErrorPage from '../ErrorPage';
 import { ToastContainer } from 'react-toastify';
@@ -19,7 +18,7 @@ const App: React.FC = () => {
                 { path: '/new-post', element: <NewPost state='add' /> },
                 { path: '/change-post/:id', element: <NewPost state='edit' /> },
                 { path: '/profile', element: <Profile /> },
-                { path: '/profile/:userID', element: <OtherUser /> },
+                { path: '/profile/:userID', element: <Profile /> },
             ],
             errorElement: <ErrorPage />,
         },
