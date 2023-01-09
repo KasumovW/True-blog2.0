@@ -5,6 +5,7 @@ import Auth from '../../pages/Auth';
 import Main from '../../pages/Main';
 import Profile from '../../pages/Profile';
 import NewPost from '../../pages/NewPost';
+import PostDetail from "../../pages/PostDetail"
 import ErrorPage from '../ErrorPage';
 import { ToastContainer } from 'react-toastify';
 
@@ -15,6 +16,7 @@ const App: React.FC = () => {
             element: <Layout />,
             children: [
                 { path: '/', element: <Main /> },
+                { path: '/post/:postID', element: <PostDetail /> },
                 { path: '/new-post', element: <NewPost state='add' /> },
                 { path: '/change-post/:id', element: <NewPost state='edit' /> },
                 { path: '/profile', element: <Profile /> },

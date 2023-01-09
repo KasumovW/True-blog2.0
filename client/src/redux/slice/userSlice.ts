@@ -196,7 +196,6 @@ export const userSlice = createSlice({
             Cookies.remove("avatar", action.payload.avatar)
             Cookies.set("login", action.payload.login)
             Cookies.set("avatar", action.payload.avatar)
-            console.log(action.payload)
         },
         //@ts-ignore
         [editUser.rejected]: setError,

@@ -36,13 +36,13 @@ module.exports.postController = {
         }
     },
 
-    getOne: async (req, res) => {
+    getPostById: async (req, res) => {
         try {
             const {id} = req.params
-            const post = Post.findById(id).populate("user").exec()
+            const post = await Post.findById(id).populate("user").exec()
 
             res.json(post)
-        } catch (error) {
+        } catch (e) {
             res.json({message: "Не удалось получить пост", error: e})
         }
     },
