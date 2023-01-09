@@ -81,7 +81,7 @@ module.exports.postController = {
 
             const {title, text} = req.body
 
-            await Post.findByIdAndUpdate(id, {$set: {title: title !== "" && title, text: text !== "" && text, image: req.file && req.file.path}})
+            await Post.findByIdAndUpdate(id, {$set: {title: title, text: text, image: req.file && req.file.path}})
 
             res.status(200).json({message: "Пост был успешно изменен"})
         } catch (e) {
