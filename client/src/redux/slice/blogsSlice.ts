@@ -97,7 +97,8 @@ export const editBlog = createAsyncThunk(
 
             if(post.title) {
                 formData.append('title', post.title);
-            } else if (post.text) {
+            }
+            if (post.text) {
                 formData.append('text', post.text);
             }
             formData.append('image', post.image);
