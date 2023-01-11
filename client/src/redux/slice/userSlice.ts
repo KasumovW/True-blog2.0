@@ -132,6 +132,29 @@ export const editUser = createAsyncThunk(
     }
 );
 
+export const likeBlog = createAsyncThunk(
+    'user/like',
+    async (data: {id: string, reqType: string}, { rejectWithValue }) => {
+        try {
+            const response = await fetch(`http://localhost:5000/users/${data.reqType}/${data.id}`, {
+                method: 'PATCH',
+                headers: {
+                    Authorization: `Bearer ${Cookies.get('token')}`,
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Не удалось добавить в понравившееся, ошибка сервера!');
+            }
+
+            return await response.json();
+            // console.log(newData);
+        } catch (error: any) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
 const setError = (state: { status: string; error: Error }, action: { payload: any }) => {
     state.status = 'failed';
     state.error = action.payload;
