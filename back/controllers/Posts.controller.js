@@ -27,7 +27,6 @@ module.exports.postController = {
         try {
             const { limit, skip } = req.query
             const posts = await Post.find({}).skip(skip).limit(limit).populate("user").exec()
-                // posts.sort((a, b) => a.likes.length - b.likes.length)
 
             res.status(200).json(posts.reverse())
         } catch (e) {

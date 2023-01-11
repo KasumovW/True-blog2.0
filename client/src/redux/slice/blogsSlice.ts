@@ -156,7 +156,9 @@ export const blogSlice = createSlice({
     initialState,
     reducers: {
         getPosts: (state, action: PayloadAction<Blog[]>) => {
-            state.blogs = action.payload;
+            const blogs = action.payload;
+            blogs.sort((a, b) => b.likes.length - a.likes.length)
+            state.blogs = blogs;
         },
         deletePost: (state, action: PayloadAction<string>) => {
             state.blogs = state.blogs.filter((element: Blog) => element._id !== action.payload);
