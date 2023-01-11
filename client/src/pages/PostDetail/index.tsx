@@ -9,6 +9,7 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz"
 import DeleteIcon from "@mui/icons-material/Delete"
 import { removeBlog } from "../../redux/slice/blogsSlice"
 import { useNavigate } from "react-router-dom"
+import Cookies from "js-cookie"
 
 interface Post {
     _id: string,
@@ -34,6 +35,7 @@ interface Post {
 const Index = () => {
 
     const dispatch = useAppDispatch()
+    const userId = Cookies.get("userId")
     const blog: Post | any = useAppSelector(state => state.blogs.watchingBlog)
     const status: Post | any = useAppSelector(state => state.blogs.status)
     const { postID } = useParams()
@@ -69,17 +71,21 @@ const Index = () => {
                         </div>
                         </Link>
                         <div className={s.dropDown}>
-                        <MoreHorizIcon className={s.edit} color='primary' />
-                        <div className={s.dropDownContent}>
-                            <Link to={`/change-post/${blog._id}`}>
-                                <p>
-                                    Изменить <EditIcon />
-                                </p>
-                            </Link>
-                            <p onClick={handleRemove}>
-                                Удалить <DeleteIcon />
-                            </p>
-                        </div>
+                            {blog.user._id === userId &&
+                                <>
+                                    <MoreHorizIcon className={s.edit} color='primary' />
+                                    <div className={s.dropDownContent}>
+                                        <Link to={`/change-post/${blog._id}`}>
+                                            <p>
+                                                Изменить <EditIcon />
+                                            </p>
+                                        </Link>
+                                        <p onClick={handleRemove}>
+                                            Удалить <DeleteIcon />
+                                        </p>
+                                    </div>
+                                </>
+                            }
                     </div>
                 </div>
                     <div className={s.post_info}>

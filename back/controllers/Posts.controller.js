@@ -28,8 +28,6 @@ module.exports.postController = {
             const { limit, skip } = req.query
             const posts = await Post.find({}).skip(skip).limit(limit).populate("user").exec()
 
-            console.log(req.query)
-
             res.status(200).json(posts.reverse())
         } catch (e) {
             res.json({message: "Не удалось получить посты", error: e})

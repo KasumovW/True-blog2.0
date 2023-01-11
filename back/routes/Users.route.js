@@ -15,7 +15,8 @@ router.post("/users/registration", [
 ], userController.registration)
 router.post("/users/login", userController.login)
 router.patch("/users/:id", authMiddleware, upload.single("avatar"), userController.editUser)
-router.post("/users/like/:id", authMiddleware, userController.likePost)
+router.patch("/users/like/:id", authMiddleware, userController.likePost)
+router.patch("/users/unlike/:id", authMiddleware, userController.unlikePost)
 router.post("/users/comment/:id", authMiddleware, userController.commentPost)
 router.delete("/users/:id", userController.deleteUser)
 

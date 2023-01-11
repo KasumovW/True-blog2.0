@@ -161,5 +161,23 @@ module.exports.userController = {
         catch (e) {
             res.status(400).json({message: "Не удалось лайкнуть пост", error: e})
         }
+    },
+
+    unlikePost: async (req, res) => {
+        try{
+            const post = await Post.findByIdAndUpdate(req.params.id, {$pull: { likes: req.user.id }})
+            const user = await User.findByIdAndUpdate(req.user.id, {$pull: { likes: req.params.id }})
+
+            if(!post) {
+                return res.status(404).json({message: "Пост не был найден"})
+            } else if (!user) {
+                return res.status(404).json({message: "Не удалось добавить в понравившиеся"})
+            }
+
+            res.status(200).json({message: "Удалено из понравившихся"})
+        }
+        catch (e) {
+            res.status(400).json({message: "Не удалось убрать пост из понравившихся", error: e})
+        }
     }
 }
