@@ -6,6 +6,8 @@ import { Button, CircularProgress, Input } from '@mui/material'
 import { editUser } from '../../redux/slice/userSlice'
 import { useAppDispatch } from '../../hooks/redux'
 import Cookies from 'js-cookie'
+import { Blog } from '../../types/blog'
+import { Link } from 'react-router-dom'
 
 type User = {
     user: {
@@ -70,10 +72,10 @@ const Index = (props: User | any) => {
         }
     }
 
+    console.log(props.user.posts)
+
     const userId = Cookies.get("userId")
 
-    console.log(id, userId)
-    
     return ( 
         <div className={s.user_info}>
             <input id='file' type="file" className={s.user_file_input} ref={inputFile} onChange={checkfile}/>
@@ -88,20 +90,28 @@ const Index = (props: User | any) => {
             </div>
             <div className={s.user_extra_info}>
                 <div className={s.flex_container}>
-                    <div>
-                        <h1 className={s.user_name}>
-                            {!isEditing && login} 
-                            <Input type="text" className={isEditing ? `${s.user_name_input + " " + s.show}` : s.user_name_input} onChange={(e) => checkLogin(e)} value={changeData.login}/>
-                            {id === userId && <BorderColorIcon className={s.pen} color='primary' onClick={edit}/>}
-                        </h1>
-                        <p className={s.created_at}>
-                            Дата создания: <span>04.03.2023</span>
-                        </p>
-                    </div>
-                    <p className={s.publications}>
-                        {posts.length}
-                        <span>публикации</span>
+                    <h1 className={s.user_name}>
+                        {!isEditing && login} 
+                        <Input type="text" className={isEditing ? `${s.user_name_input + " " + s.show}` : s.user_name_input} onChange={(e) => checkLogin(e)} value={changeData.login}/>
+                        {id === userId && <BorderColorIcon className={s.pen} color='primary' onClick={edit}/>}
+                    </h1>
+                    <p className={s.created_at}>
+                        Дата создания: <span>04.03.2023</span>
                     </p>
+                </div>
+                <div className={s.publications}>
+                    <p>{posts.length} публикации</p>
+                    <div className={s.publications_preview}>
+                        {props.user && props.user.posts.map((post: Blog) => {
+                            return (
+                                <Link to={`/post/${post._id}`}>
+                                    <div>
+                                        {post.image ? <img src={url + post.image} alt="" /> : <p>{post.title.slice(0, 30)}</p>}
+                                    </div>
+                                </Link>
+                            )
+                        })}
+                    </div>
                 </div>
                 {isEditing &&
                 <div className={s.button_wrapper}>
