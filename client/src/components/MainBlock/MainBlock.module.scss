@@ -4,58 +4,87 @@
     // background-color: white;
     border-radius: 10px;
 }
-    .blog_item {
-        padding: 15px 20px;
 
-        .blog_header {
-            display: flex;
-            position: relative;
+.blog_item {
+    padding: 15px 20px;
 
-            img {
-                width: 60px;
-                height: 60px;
-                border-radius: 60px;
-                margin-right: 20px;
-                object-fit: cover;
-            }
-
-            div {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-
-                p {
-                    margin: 0;
-                    font-weight: 600;
-                    font-size: 20px;
-                }
-
-                p + p {
-                    color: rgba($color: #000000, $alpha: 0.5);
-                    font-size: 18px;
-                    font-weight: 500;
-                }
-            }
-
-            .edit {
-                position: absolute;
-                right: 10px;
-                top: 15px;
-                cursor: pointer;
-                font-size: 32px;
-                margin-right: 5px;
-            }
-        }
-
-        p {
-            font-size: 22px;
-            line-height: 26px;
-        }
-    }
-
-    .loader {
-        height: 100vh;
+    .blog_header {
         display: flex;
-        justify-content: center;
-        align-items: center;
+        position: relative;
+
+        img {
+            width: 60px;
+            height: 60px;
+            border-radius: 60px;
+            margin-right: 20px;
+            object-fit: cover;
+        }
+
+        div {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            p {
+                margin: 0;
+                font-weight: 600;
+                font-size: 20px;
+            }
+
+            p + p {
+                color: rgba($color: #000000, $alpha: 0.5);
+                font-size: 18px;
+                font-weight: 500;
+            }
+        }
+
+        .edit {
+            position: absolute;
+            right: 10px;
+            top: 15px;
+            cursor: pointer;
+            font-size: 32px;
+            margin-right: 5px;
+        }
     }
+
+    p {
+        font-size: 22px;
+        line-height: 26px;
+    }
+}
+
+.loader {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search {
+    margin-bottom: -10px;
+
+    .container {
+        width: 340px;
+        height: 40px;
+        margin: auto;
+        border-radius: 10px 10px 0 0;
+        background-color: white;
+        display: flex;
+        justify-content: space-between;
+        padding: 0 5px;
+
+        svg {
+            margin: auto 0;
+            width: 25px;
+            height: 25px;
+        }
+
+        input {
+            width: 300px;
+            border: none;
+            font-size: 18px;
+            outline: none;
+        }
+    }
+}
