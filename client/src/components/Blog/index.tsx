@@ -24,9 +24,11 @@ const imagePlug = 'https://www.study.ru/uploads/server/rS22pEaa0EpHMKAA.jpg';
 const index = ({ blog }: Props) => {
     const dispatch = useAppDispatch();
     const userId = Cookies.get('userId');
+    const token = Cookies.get("token");
 
     const [isLiked, setIsLiked] = useState<boolean>(!!blog.likes.find((item) => item === userId)),
-          [likesAmount, setLikesAmount] = useState<number>(blog.likes.length)
+          [likesAmount, setLikesAmount] = useState<number>(blog.likes.length),
+          [full, setFull] = useState<boolean>(false)
 
     const handleRemove = () => {
         dispatch(removeBlog(blog._id));
@@ -43,6 +45,13 @@ const index = ({ blog }: Props) => {
             setLikesAmount(likesAmount + 1)
         }
     }
+
+    const condition = full ? undefined : 400
+
+    const handleFull = () => {
+        setFull(!full)
+    }
+
 
     return (
         <div className={s.blog_wrapper}>
@@ -77,18 +86,21 @@ const index = ({ blog }: Props) => {
                 <Link to={`/post/${blog._id}`}>
                     <h1 className={s.blog_title}>{blog.title}</h1>
                 </Link>
-                <p className={s.blog_text}>{blog.text}</p>
+                <p className={s.blog_text} dangerouslySetInnerHTML={{__html: blog.text.slice(0, condition).split("\n").join("<br />").toString()}}></p>
+                {blog.text.length > 400 && <span onClick={handleFull} className={s.read_more}>{full ? "Скрыть" : "Читать дальше"}</span>}
                 {blog.image && (
                     <img src={`http://localhost:5000/${blog.image}`} alt='Картинка не прогрузилась' />
                 )}
+                {token &&
                 <div className={s.likeWrapper}>
-                    {
+                    { 
                         isLiked ?
                         <><span>{likesAmount}</span><FavoriteIcon onClick={handleLike} fontSize='large' color='primary'/></>
                         :
                         <><span>{likesAmount}</span><FavoriteBorderIcon onClick={handleLike} fontSize='large' color='primary'/></>
                     }
                 </div>
+                }
             </div>
         </div>
     );

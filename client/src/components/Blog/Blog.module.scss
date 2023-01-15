@@ -11,6 +11,15 @@
         cursor: pointer;
     }
 
+    .read_more {
+        font-size: 18px;
+        display: block;
+        cursor: pointer;
+        user-select: none;
+        margin: 20px 0;
+        color:rgba($color: #125ba3, $alpha: 1)
+    }
+
     .blog_header {
         display: flex;
         position: relative;

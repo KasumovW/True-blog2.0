@@ -91,7 +91,7 @@ const Index = () => {
                     <div className={s.post_info}>
                         <h1>{blog.title}</h1>
                         <img src={blog.image && url + blog.image} alt="" />
-                        <p>{blog.text}</p>
+                        <p dangerouslySetInnerHTML={{__html: blog.text.split("\n").join("<br />")}}></p>
                     </div>
                 </div>
             </div>

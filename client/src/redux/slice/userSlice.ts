@@ -171,14 +171,16 @@ export const userSlice = createSlice({
 
             Cookies.set('userId', id);
             Cookies.set('login', login);
-            Cookies.set('role', role);
             Cookies.set('avatar', avatar);
-            Cookies.set('posts', posts);
             Cookies.set('likes', likes);
             Cookies.set('token', token);
         },
         logout: (state) => {
             Cookies.remove('token');
+            Cookies.remove('userId');
+            Cookies.remove('login');
+            Cookies.remove('avatar');
+            Cookies.remove('likes');
             state.token = null;
         },
         removeUserId: (state) => {
