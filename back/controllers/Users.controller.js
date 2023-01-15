@@ -79,7 +79,7 @@ module.exports.userController = {
     getUserById: async (req, res) => { 
         try {
             const { id } = req.params
-            const user = await User.findById(id).populate("posts").exec()
+            const user = await User.findById(id).populate("posts").populate("likes").exec()
 
             res.json({id: user._id, login: user.login, role: user.role, posts: user.posts, likes: user.likes, avatar: user.avatar, createdAt: user.createdAt
             })
