@@ -28,7 +28,10 @@ const user = mongoose.Schema({
         type: String,
         default: moment().format("DD.MM.YYYY")
     },
-    likes: [],
+    likes: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Post"
+    }],
     comments: []
 })
 

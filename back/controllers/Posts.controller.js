@@ -56,6 +56,7 @@ module.exports.postController = {
             }
 
             await User.findByIdAndUpdate(req.user.id, {$pull: { posts: post._id}})
+            await User.find({$pull: { likes: post._id}})
 
             post.remove()
 

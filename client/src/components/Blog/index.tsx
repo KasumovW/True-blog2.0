@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React,{ useState } from 'react';
 import s from './Blog.module.scss';
 import { Link } from 'react-router-dom';
 
@@ -7,6 +7,16 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import Slide from '@mui/material/Slide';
+import { TransitionProps } from '@mui/material/transitions';
+
 
 import { Blog } from '../../types/blog';
 import { useAppDispatch } from '../../hooks/redux';
@@ -21,6 +31,15 @@ type Props = {
 
 const imagePlug = 'https://www.study.ru/uploads/server/rS22pEaa0EpHMKAA.jpg';
 
+const Transition = React.forwardRef(function Transition(
+    props: TransitionProps & {
+      children: React.ReactElement<any, any>;
+    },
+    ref: React.Ref<unknown>,
+  ) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
+
 const index = ({ blog }: Props) => {
     const dispatch = useAppDispatch();
     const userId = Cookies.get('userId');
@@ -28,7 +47,9 @@ const index = ({ blog }: Props) => {
 
     const [isLiked, setIsLiked] = useState<boolean>(!!blog.likes.find((item) => item === userId)),
           [likesAmount, setLikesAmount] = useState<number>(blog.likes.length),
-          [full, setFull] = useState<boolean>(false)
+          [full, setFull] = useState<boolean>(false),
+          [open, setOpen] = React.useState(false);
+
 
     const handleRemove = () => {
         dispatch(removeBlog(blog._id));
@@ -51,6 +72,15 @@ const index = ({ blog }: Props) => {
     const handleFull = () => {
         setFull(!full)
     }
+
+
+    const handleClickOpen = () => {
+    setOpen(true);
+    };
+
+    const handleClose = () => {
+    setOpen(false);
+    };
 
 
     return (
@@ -91,16 +121,33 @@ const index = ({ blog }: Props) => {
                 {blog.image && (
                     <img src={`http://localhost:5000/${blog.image}`} alt='Картинка не прогрузилась' />
                 )}
-                {token &&
+
+                <Dialog
+                    open={open}
+                    TransitionComponent={Transition}
+                    keepMounted
+                    onClose={handleClose}
+                    aria-describedby="alert-dialog-slide-description"
+                >
+                    <DialogTitle>{"Вы не авторизованы"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-slide-description">
+                            Для того чтобы поставить лайк необходимо авторизоваться
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Link to={"/auth"}><Button>Авторизоваться</Button></Link>
+                    </DialogActions>
+                </Dialog>
+
                 <div className={s.likeWrapper}>
                     { 
                         isLiked ?
                         <><span>{likesAmount}</span><FavoriteIcon onClick={handleLike} fontSize='large' color='primary'/></>
                         :
-                        <><span>{likesAmount}</span><FavoriteBorderIcon onClick={handleLike} fontSize='large' color='primary'/></>
+                        <><span>{likesAmount}</span><FavoriteBorderIcon onClick={token ? handleLike : handleClickOpen} fontSize='large' color='primary'/></>
                     }
                 </div>
-                }
             </div>
         </div>
     );

@@ -105,7 +105,8 @@
 }
 
 .publications {
-    display: block;
+    display: flex;
+    justify-content: space-between;
     font-size: 36px;
     margin: 0;
     font-weight: 600;
@@ -116,10 +117,11 @@
     }
 
     .publications_preview {
-        max-width: 50%;
+        // max-width: 50%;
         overflow-y: hidden;
         overflow-x: scroll;
         display: flex;
+        max-width: 400px;
         padding: 20px 20px 20px 0;
         scrollbar-width: 5px;
         scrollbar-color: blue;
