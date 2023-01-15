@@ -1,11 +1,14 @@
-import { CircularProgress } from '@mui/material';
 import React, { memo } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { defaultStatus, fetchBlogs } from '../../redux/slice/blogsSlice';
 import { Blog as IBlog } from '../../types/blog';
 import Blog from '../Blog';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+
+import { toast } from 'react-toastify';
+
+import { CircularProgress } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+import debounce from 'lodash.debounce';
 
 import s from './MainBlock.module.scss';
 
@@ -19,6 +22,8 @@ const index = (props: Props) => {
         dispatch(fetchBlogs());
     }, [dispatch]);
 
+
+    //Status
     React.useEffect(() => {
         if (status === 'succeeded') {
             dispatch(defaultStatus());
@@ -31,21 +36,54 @@ const index = (props: Props) => {
         </div>;
     }
 
+    if (error) {
+        <h1>{error}</h1>;
+    }
+
     if (status === 'succeeded') {
         toast('Пост успешно удален', {
             type: 'success',
         });
     }
 
-    if (error) {
-        <h1>{error}</h1>;
-    }
+
+    //Debounce
+    const [value, setValue] = React.useState<string>('');
+    const [search, setSearch] = React.useState<string>('');
+
+    const updateSearchValue = React.useCallback(
+        debounce((text: string) => {
+            console.log(`debounce ${text}`);
+            setSearch(text);
+        }, 500),
+        []
+    );
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setValue(e.target.value);
+        updateSearchValue(e.target.value);
+    };
+
+
+    //Filter data
+    const filteredBlogs = blogs.filter((blog) => {
+        return blog.title.toLocaleLowerCase().includes(search.toLocaleLowerCase());
+    });
 
     return (
         <div className={s.wrapper}>
-            {blogs.map((elem: IBlog) => (
+            <div className={s.search}>
+                <div className={s.container}>
+                    <SearchIcon color='primary' />
+                    <input type='text' value={value} onChange={handleChange} />
+                </div>
+            </div>{' '}
+            {filteredBlogs.map((elem: IBlog) => (
                 <Blog key={elem._id} blog={elem} />
             ))}
+            {!filteredBlogs.length && (
+                <div className={s.nothing}>К сожалению по вашему запросу нечего не найдено</div>
+            )}
         </div>
     );
 };

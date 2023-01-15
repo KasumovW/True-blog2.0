@@ -10,7 +10,6 @@ type ChangePost = {
     id: string | undefined;
 };
 
-
 interface BlogsSliceState {
     blogs: Blog[] | [];
     watchingBlog: Blog | null;
@@ -40,23 +39,25 @@ export const fetchBlogs = createAsyncThunk('blogs/fetch', async (_, { rejectWith
     }
 });
 
-export const getPostById = createAsyncThunk('blogs/getOne', async (postID: string | undefined, { rejectWithValue, dispatch }) => {
-    try {
-        if(!postID) {
-            return "ID не найден"
-        }
-        const response = await fetch(`http://localhost:5000/posts/${postID}`);
+export const getPostById = createAsyncThunk(
+    'blogs/getOne',
+    async (postID: string | undefined, { rejectWithValue, dispatch }) => {
+        try {
+            if (!postID) {
+                return 'ID не найден';
+            }
+            const response = await fetch(`http://localhost:5000/posts/${postID}`);
 
-        if (!response.ok) {
-            throw new Error('Посты с сервера не получены, проблета ответа сервера!');
-        }
+            if (!response.ok) {
+                throw new Error('Посты с сервера не получены, проблета ответа сервера!');
+            }
 
-        return await response.json();
-    } catch (error: any) {
-        return rejectWithValue(error.message);
+            return await response.json();
+        } catch (error: any) {
+            return rejectWithValue(error.message);
+        }
     }
-});
-
+);
 
 export const addBlog = createAsyncThunk('blogs/add', async (data: Post, { rejectWithValue, dispatch }) => {
     console.log(data);
@@ -121,7 +122,7 @@ export const editBlog = createAsyncThunk(
 
             const formData = new FormData();
 
-            if(post.title) {
+            if (post.title) {
                 formData.append('title', post.title);
             }
             if (post.text) {
@@ -157,7 +158,7 @@ export const blogSlice = createSlice({
     reducers: {
         getPosts: (state, action: PayloadAction<Blog[]>) => {
             const blogs = action.payload;
-            blogs.sort((a, b) => b.likes.length - a.likes.length)
+            blogs.sort((a, b) => b.likes.length - a.likes.length);
             state.blogs = blogs;
         },
         deletePost: (state, action: PayloadAction<string>) => {
@@ -178,10 +179,9 @@ export const blogSlice = createSlice({
         defaultStatus: (state) => {
             state.status = null;
         },
-        
         removeWatchingBlog: (state) => {
             state.watchingBlog = null;
-        }
+        },
     },
     extraReducers: (builder) => {
         //Получение
