@@ -4,15 +4,22 @@ import LeftBar from '../../components/LeftBar';
 import MainBlock from '../../components/MainBlock';
 import s from './Main.module.scss';
 
+//@ts-ignore
+import Fade from 'react-reveal/Fade';
+
 type Props = {};
 
 const Index = (props: Props) => {
     return (
         <div className={s.wrapper}>
-            <LeftBar />
+            <Fade left>
+                <LeftBar />
+            </Fade>
 
             <div className={s.container}>
-                <Banner />
+                <Fade right>
+                    <Banner />
+                </Fade>
                 <MainBlock />
             </div>
         </div>
