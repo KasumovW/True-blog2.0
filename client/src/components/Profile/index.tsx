@@ -72,7 +72,7 @@ const Index = (props: User | any) => {
         }
     }
 
-    console.log(props.user.posts)
+    console.log(props.user.likes)
 
     const userId = Cookies.get("userId")
 
@@ -100,17 +100,33 @@ const Index = (props: User | any) => {
                     </p>
                 </div>
                 <div className={s.publications}>
-                    <p>{posts.length} публикации</p>
-                    <div className={s.publications_preview}>
-                        {props.user && props.user.posts.map((post: Blog) => {
-                            return (
-                                <Link to={`/post/${post._id}`}>
-                                    <div>
-                                        {post.image ? <img src={url + post.image} alt="" /> : <p>{post.title.slice(0, 30)}</p>}
-                                    </div>
-                                </Link>
-                            )
-                        })}
+                    <div className={s.publications_wrapper}>
+                        <p>{posts.length} публикации</p>
+                        <div className={s.publications_preview}>
+                            {props.user && props.user.posts.map((post: Blog) => {
+                                return (
+                                    <Link to={`/post/${post._id}`}>
+                                        <div title={post.title}>
+                                            {post.image ? <img src={url + post.image} alt="" /> : <p>{post.title.slice(0, 30)}</p>}
+                                        </div>
+                                    </Link>
+                                )
+                            })}
+                        </div>
+                    </div>
+                    <div className={s.publications_wrapper}>
+                        <p>{likes.length} понравившихся</p>
+                        <div className={s.publications_preview}>
+                            {props.user && props.user.likes.map((post: Blog) => {
+                                return (
+                                    <Link to={`/post/${post._id}`}>
+                                        <div title={post.title}>
+                                            {post.image ? <img src={url + post.image} alt="" /> : <p>{post.title.slice(0, 30)}</p>}
+                                        </div>
+                                    </Link>
+                                )
+                            })}
+                        </div>
                     </div>
                 </div>
                 {isEditing &&
