@@ -1,10 +1,15 @@
 import React, { memo } from 'react';
+
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { defaultStatus, fetchBlogs } from '../../redux/slice/blogsSlice';
+
 import { Blog as IBlog } from '../../types/blog';
 import Blog from '../Blog';
 
 import { toast } from 'react-toastify';
+
+//@ts-ignore
+import Fade from 'react-reveal/Fade';
 
 import { CircularProgress } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
@@ -21,7 +26,6 @@ const index = (props: Props) => {
     React.useEffect(() => {
         dispatch(fetchBlogs());
     }, [dispatch]);
-
 
     //Status
     React.useEffect(() => {
@@ -46,7 +50,6 @@ const index = (props: Props) => {
         });
     }
 
-
     //Debounce
     const [value, setValue] = React.useState<string>('');
     const [search, setSearch] = React.useState<string>('');
@@ -64,7 +67,6 @@ const index = (props: Props) => {
         updateSearchValue(e.target.value);
     };
 
-
     //Filter data
     const filteredBlogs = blogs.filter((blog) => {
         return blog.title.toLocaleLowerCase().includes(search.toLocaleLowerCase());
@@ -79,7 +81,9 @@ const index = (props: Props) => {
                 </div>
             </div>{' '}
             {filteredBlogs.map((elem: IBlog) => (
-                <Blog key={elem._id} blog={elem} />
+                <Fade opposite bottom>
+                    <Blog key={elem._id} blog={elem} />
+                </Fade>
             ))}
             {!filteredBlogs.length && (
                 <div className={s.nothing}>К сожалению по вашему запросу нечего не найдено</div>
