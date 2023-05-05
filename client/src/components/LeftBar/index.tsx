@@ -53,7 +53,7 @@ const index = (props: Props) => {
             </div>
             <Link to='/new-post'>
                 <Button fullWidth variant='contained' sx={{ mt: 3 }} color='primary'>
-                    Added new post
+                    Add new post
                 </Button>
             </Link>
         </div>

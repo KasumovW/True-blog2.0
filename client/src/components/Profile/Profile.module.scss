@@ -3,6 +3,7 @@
     padding: 30px;
     border-radius: 30px;
     position: relative;
+    text-align: center;
 
     .user_file_input {
         display: none;
@@ -179,4 +180,11 @@
 .button_wrapper {
     display: flex;
     justify-content: end;
+}
+
+@media screen and (max-width: 650px) {
+    .flex_container, .publications {
+        align-items: center;
+        flex-direction: column;
+    }
 }

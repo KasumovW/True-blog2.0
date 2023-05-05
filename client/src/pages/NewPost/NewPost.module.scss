@@ -1,5 +1,6 @@
 .wrapper {
-    width: 935px;
+    max-width: 935px;
+    width: 60%;
     margin: auto;
     margin-bottom: 50px;
     background-color: white;
@@ -48,5 +49,11 @@
         input {
             display: none;
         }
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .wrapper {
+        width: 95%;
     }
 }
