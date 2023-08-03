@@ -16,7 +16,7 @@ type Props = {
 
 const index = ({ changeData, data }: Props) => {
     const dispatch = useAppDispatch();
-    const handleReg = (e: React.MouseEvent) => {
+    const handleReg = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         if (data.password === data.passConf) {

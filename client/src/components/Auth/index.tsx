@@ -14,7 +14,7 @@ type Props = {
 const Index = ({ changeData, data }: Props) => {
     const dispatch = useAppDispatch();
 
-    const handleAuth = (e: React.MouseEvent) => {
+    const handleAuth = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         dispatch(authorization(data));
     };
