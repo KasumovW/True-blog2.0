@@ -9,7 +9,13 @@ const PORT = process.env.PORT || 5000
 
 app.use(express.json())
 app.use(cookieParser())
-app.use(cors())
+app.use(cors(
+    {
+        origin: ["https://true-blog-v2.vercel.app/"],
+        methods: ["POST", "GET", "DELETE", "PUT", "PATCH"],
+        credentials: true
+    }
+))
 app.use(require("./routes/Users.route.js"))
 app.use(require("./routes/Posts.route.js"))
 app.use("/uploads", express.static("uploads"))
