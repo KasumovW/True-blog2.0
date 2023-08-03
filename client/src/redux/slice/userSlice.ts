@@ -3,6 +3,8 @@ import { UserData } from '../../types/user';
 import Cookies from 'js-cookie';
 import { Blog } from '../../types/blog';
 
+import { URL } from '../../api';
+
 interface UserAction {
     id: string;
     login: string;
@@ -35,7 +37,7 @@ export const authorization = createAsyncThunk(
     'user/auth',
     async (data: UserData, { rejectWithValue, dispatch }) => {
         try {
-            const response = await fetch('http://localhost:5000/users/login', {
+            const response = await fetch(URL + '/users/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -60,7 +62,7 @@ export const authorization = createAsyncThunk(
 
 export const registration = createAsyncThunk('user/reg', async (data: UserData, { rejectWithValue }) => {
     try {
-        const response = await fetch('http://localhost:5000/users/registration', {
+        const response = await fetch(URL + '/users/registration', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -83,7 +85,7 @@ export const registration = createAsyncThunk('user/reg', async (data: UserData, 
 
 export const getUserByID = createAsyncThunk('user/getUser', async (userID: string, { rejectWithValue }) => {
     try {
-        const response = await fetch(`http://localhost:5000/users/${userID}`, {
+        const response = await fetch(URL + `/users/${userID}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -110,7 +112,7 @@ export const editUser = createAsyncThunk(
             formData.append('login', data.login);
             formData.append('avatar', data.file);
 
-            const response = await fetch(`http://localhost:5000/users/${userID}`, {
+            const response = await fetch(URL + `/users/${userID}`, {
                 method: 'PATCH',
                 headers: {
                     Authorization: `Bearer ${Cookies.get('token')}`,
@@ -133,7 +135,7 @@ export const likeBlog = createAsyncThunk(
     'user/like',
     async (data: {id: string, reqType: string}, { rejectWithValue }) => {
         try {
-            const response = await fetch(`http://localhost:5000/users/${data.reqType}/${data.id}`, {
+            const response = await fetch(URL + `/users/${data.reqType}/${data.id}`, {
                 method: 'PATCH',
                 headers: {
                     Authorization: `Bearer ${Cookies.get('token')}`,
@@ -216,7 +218,7 @@ export const userSlice = createSlice({
         //@ts-ignore
         [getUserByID.fulfilled]: (state: any, action: any) => {
             state.status = 'succeeded';
-            action.payload.avatar = "http://localhost:5000/" + action.payload.avatar
+            action.payload.avatar = URL + "/" + action.payload.avatar
             state.watchingUser = action.payload;
             state.error = null;
         },

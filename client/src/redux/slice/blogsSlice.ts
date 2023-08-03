@@ -5,6 +5,8 @@ import { Blog } from '../../types/blog';
 import { Post } from '../../pages/NewPost';
 import { RootState } from '../store';
 
+import { URL } from '../../api';
+
 type ChangePost = {
     post: Post;
     id: string | undefined;
@@ -26,7 +28,7 @@ const initialState: BlogsSliceState = {
 
 export const fetchBlogs = createAsyncThunk('blogs/fetch', async (_, { rejectWithValue, dispatch }) => {
     try {
-        const response = await fetch('http://localhost:5000/posts');
+        const response = await fetch(URL + '/posts');
 
         if (!response.ok) {
             throw new Error('Посты с сервера не получены, проблета ответа сервера!');
@@ -46,7 +48,7 @@ export const getPostById = createAsyncThunk(
             if (!postID) {
                 return 'ID не найден';
             }
-            const response = await fetch(`http://localhost:5000/posts/${postID}`);
+            const response = await fetch(URL + `/posts/${postID}`);
 
             if (!response.ok) {
                 throw new Error('Посты с сервера не получены, проблета ответа сервера!');
@@ -69,7 +71,7 @@ export const addBlog = createAsyncThunk('blogs/add', async (data: Post, { reject
         formData.append('text', data.text);
         formData.append('image', data.image);
 
-        const response = await fetch('http://localhost:5000/posts', {
+        const response = await fetch(URL + '/posts', {
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${Cookies.get('token')}`,
@@ -94,7 +96,7 @@ export const removeBlog = createAsyncThunk(
         try {
             console.log(id);
 
-            const response = await fetch(`http://localhost:5000/posts/${id}`, {
+            const response = await fetch( URL + `/posts/${id}`, {
                 method: 'DELETE',
                 headers: {
                     Authorization: `Bearer ${Cookies.get('token')}`,
@@ -130,7 +132,7 @@ export const editBlog = createAsyncThunk(
             }
             formData.append('image', post.image);
 
-            const response = await fetch(`http://localhost:5000/posts/${id}/`, {
+            const response = await fetch(URL + `/posts/${id}/`, {
                 method: 'PATCH',
                 //@ts-ignore
                 headers: {

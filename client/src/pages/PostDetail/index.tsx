@@ -11,6 +11,8 @@ import { removeBlog } from "../../redux/slice/blogsSlice"
 import { useNavigate } from "react-router-dom"
 import Cookies from "js-cookie"
 
+import { URL } from "../../api"
+
 interface Post {
     _id: string,
     title: string,
@@ -39,7 +41,7 @@ const Index = () => {
     const blog: Post | any = useAppSelector(state => state.blogs.watchingBlog)
     const status: Post | any = useAppSelector(state => state.blogs.status)
     const { postID } = useParams()
-    const url = "http://localhost:5000/"
+    const url = URL + "/"
     const navigate = useNavigate()
 
     useEffect(() => {

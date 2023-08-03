@@ -1,0 +1,1 @@
+export const URL = "https://true-blog-v2-api.vercel.app"

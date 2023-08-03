@@ -9,6 +9,8 @@ import Cookies from 'js-cookie'
 import { Blog } from '../../types/blog'
 import { Link } from 'react-router-dom'
 
+import { URL } from '../../api'
+
 type User = {
     user: {
         login: string,
@@ -35,7 +37,7 @@ const Index = (props: User | any) => {
         [preview, setPreview] = useState<any>(null)
 
     const inputFile = useRef<any>(null),
-        url = "http://localhost:5000/"
+        url = URL + "/"
 
     const checkfile = () => {
         if(inputFile) {

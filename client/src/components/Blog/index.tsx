@@ -24,6 +24,8 @@ import { removeBlog } from '../../redux/slice/blogsSlice';
 import { likeBlog } from '../../redux/slice/userSlice';
 import Cookies from 'js-cookie';
 
+import { URL } from '../../api';
+
 
 type Props = {
     blog: Blog;
@@ -89,7 +91,7 @@ const index = ({ blog }: Props) => {
                 <div className={s.blog_header}>
                     <Link style={{ display: 'flex' }} to={`/profile/${blog.user._id}`}>
                         <img
-                            src={blog.user.avatar && `http://localhost:5000/${blog.user.avatar}`}
+                            src={blog.user.avatar && URL + `/${blog.user.avatar}`}
                             alt='Иконка не прогрузилась'
                         />
                         <div>
@@ -119,7 +121,7 @@ const index = ({ blog }: Props) => {
                 <p className={s.blog_text} dangerouslySetInnerHTML={{__html: blog.text.slice(0, condition).split("\n").join("<br />").toString()}}></p>
                 {blog.text.length > 400 && <span onClick={handleFull} className={s.read_more}>{full ? "Скрыть" : "Читать дальше"}</span>}
                 {blog.image && (
-                    <img src={`http://localhost:5000/${blog.image}`} alt='Картинка не прогрузилась' />
+                    <img src={URL + `/${blog.image}`} alt='Картинка не прогрузилась' />
                 )}
 
                 <Dialog
