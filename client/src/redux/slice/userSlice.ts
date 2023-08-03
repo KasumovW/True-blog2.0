@@ -49,7 +49,7 @@ export const authorization = createAsyncThunk(
             });
 
             if (!response.ok) {
-                throw new Error('Вы не смогли авторизоватся, ошибка сервера!');
+                throw new Error('Вы не смогли авторизоваться, ошибка сервера!');
             }
 
             const newData = await response.json();

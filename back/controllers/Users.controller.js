@@ -62,7 +62,7 @@ module.exports.userController = {
 
             res.json({token, id: user._id, login: user.login, role: user.role, posts: user.posts, likes: user.likes, comments: user.comments, avatar: user.avatar})
         } catch (e) {
-            res.status(400).json({message: "Не удалось получить войти в систему", error: e})
+            res.status(400).json({message: "Не удалось войти в систему", error: e, data: user})
         }
     },
 
