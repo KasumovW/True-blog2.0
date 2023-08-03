@@ -28,11 +28,7 @@ const initialState: BlogsSliceState = {
 
 export const fetchBlogs = createAsyncThunk('blogs/fetch', async (_, { rejectWithValue, dispatch }) => {
     try {
-        const response = await fetch(URL + '/posts', {
-            headers: {
-                "Access-Control-Allow-Origin:": URL
-            }
-        });
+        const response = await fetch(URL + '/posts',);
 
         if (!response.ok) {
             throw new Error('Посты с сервера не получены, проблета ответа сервера!');
@@ -52,11 +48,7 @@ export const getPostById = createAsyncThunk(
             if (!postID) {
                 return 'ID не найден';
             }
-            const response = await fetch(URL + `/posts/${postID}`, {
-                headers: {
-                    "Access-Control-Allow-Origin:": URL
-                }
-            });
+            const response = await fetch(URL + `/posts/${postID}`);
 
             if (!response.ok) {
                 throw new Error('Посты с сервера не получены, проблета ответа сервера!');
@@ -83,7 +75,6 @@ export const addBlog = createAsyncThunk('blogs/add', async (data: Post, { reject
             method: 'POST',
             headers: {
                 Authorization: `Bearer ${Cookies.get('token')}`,
-                "Access-Control-Allow-Origin:": URL
             },
             body: formData,
         });
@@ -109,7 +100,6 @@ export const removeBlog = createAsyncThunk(
                 method: 'DELETE',
                 headers: {
                     Authorization: `Bearer ${Cookies.get('token')}`,
-                    "Access-Control-Allow-Origin:": URL
                 },
             });
 
@@ -147,7 +137,6 @@ export const editBlog = createAsyncThunk(
                 //@ts-ignore
                 headers: {
                     authorization: `Bearer ${Cookies.get('token')}`,
-                    "Access-Control-Allow-Origin:": URL
                 },
                 body: formData,
             });
