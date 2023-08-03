@@ -53,7 +53,6 @@ const Index = (props: User | any) => {
     }
 
     const checkLogin = (e: any) => {
-        console.log(e)
         setChangeData({...changeData, login: e.target.value})
     }
 
@@ -71,8 +70,6 @@ const Index = (props: User | any) => {
             setLogin(changeData.login)
         }
     }
-
-    console.log(props.user.likes)
 
     const userId = Cookies.get("userId")
 
@@ -105,7 +102,7 @@ const Index = (props: User | any) => {
                         <div className={s.publications_preview}>
                             {props.user && props.user.posts.map((post: Blog) => {
                                 return (
-                                    <Link to={`/post/${post._id}`}>
+                                    <Link key={post._id} to={`/post/${post._id}`}>
                                         <div title={post.title}>
                                             {post.image ? <img src={url + post.image} alt="" /> : <p>{post.title.slice(0, 30)}</p>}
                                         </div>
@@ -119,7 +116,7 @@ const Index = (props: User | any) => {
                         <div className={s.publications_preview}>
                             {props.user && props.user.likes.map((post: Blog) => {
                                 return (
-                                    <Link to={`/post/${post._id}`}>
+                                    <Link key={post._id} to={`/post/${post._id}`}>
                                         <div title={post.title}>
                                             {post.image ? <img src={url + post.image} alt="" /> : <p>{post.title.slice(0, 30)}</p>}
                                         </div>

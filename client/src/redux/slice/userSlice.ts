@@ -76,7 +76,6 @@ export const registration = createAsyncThunk('user/reg', async (data: UserData, 
         }
 
         const newData = await response.json();
-        console.log(newData);
     } catch (error: any) {
         return rejectWithValue(error.message);
     }
@@ -96,7 +95,6 @@ export const getUserByID = createAsyncThunk('user/getUser', async (userID: strin
         }
 
         return await response.json();
-        // console.log(newData);
     } catch (error: any) {
         return rejectWithValue(error.message);
     }
@@ -125,7 +123,6 @@ export const editUser = createAsyncThunk(
             }
 
             return await response.json();
-            // console.log(newData);
         } catch (error: any) {
             return rejectWithValue(error.message);
         }
@@ -148,7 +145,6 @@ export const likeBlog = createAsyncThunk(
             }
 
             return await response.json();
-            // console.log(newData);
         } catch (error: any) {
             return rejectWithValue(error.message);
         }
@@ -165,8 +161,6 @@ export const userSlice = createSlice({
     initialState,
     reducers: {
         changeToken: (_, action: PayloadAction<UserAction>) => {
-            console.log(action.payload);
-
             const { id, login, avatar, posts, likes, role, token } = action.payload;
 
             Cookies.set('userId', id);
@@ -223,7 +217,6 @@ export const userSlice = createSlice({
         [getUserByID.fulfilled]: (state: any, action: any) => {
             state.status = 'succeeded';
             action.payload.avatar = "http://localhost:5000/" + action.payload.avatar
-            console.log(action.payload)
             state.watchingUser = action.payload;
             state.error = null;
         },
