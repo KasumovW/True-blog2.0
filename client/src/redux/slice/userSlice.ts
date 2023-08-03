@@ -41,7 +41,6 @@ export const authorization = createAsyncThunk(
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    "Access-Control-Allow-Origin:": URL
                 },
                 body: JSON.stringify({
                     login: data.login,
@@ -67,7 +66,6 @@ export const registration = createAsyncThunk('user/reg', async (data: UserData, 
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                "Access-Control-Allow-Origin:": URL
             },
             body: JSON.stringify({
                 login: data.login,
@@ -91,7 +89,6 @@ export const getUserByID = createAsyncThunk('user/getUser', async (userID: strin
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                "Access-Control-Allow-Origin:": URL
             },
         });
 
@@ -119,7 +116,6 @@ export const editUser = createAsyncThunk(
                 method: 'PATCH',
                 headers: {
                     Authorization: `Bearer ${Cookies.get('token')}`,
-                    "Access-Control-Allow-Origin:": URL
                 },
                 body: formData,
             });
@@ -143,7 +139,6 @@ export const likeBlog = createAsyncThunk(
                 method: 'PATCH',
                 headers: {
                     Authorization: `Bearer ${Cookies.get('token')}`,
-                    "Access-Control-Allow-Origin:": URL
                 },
             });
 
