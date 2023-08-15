@@ -118,6 +118,7 @@ export const editUser = createAsyncThunk(
                     Authorization: `Bearer ${Cookies.get('token')}`,
                 },
                 body: formData,
+                credentials: 'include'
             });
 
             if (!response.ok) {
